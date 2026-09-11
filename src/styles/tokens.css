@@ -64,8 +64,8 @@
 
   /* §7 — raio */
   --radius-pill: 999px;
-  --radius-card: 4px;
-  --radius-media: 4px;
+  --radius-card: 12px;
+  --radius-media: 12px;
   --radius-input: 6px;
   --radius-avatar: 50%;
 
