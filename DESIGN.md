@@ -297,11 +297,12 @@ Nada quica, nada pisca, nada gira.
 - Vídeo de fundo, se houver: mudo, `playsinline`, com pôster, **nunca no
   mobile**, e com controle de pausa visível.
 
-**Ativo reservado para esta seção:** `fotos/simulacao_afastando_da_casa.mp4`
-— simulação de afastamento da casa, fornecida pelo usuário em 2026-09-11.
-Preenche a lacuna "drone do conjunto com o vale" do §10/`curadoria-fotos.md`.
-**Uso pretendido: efeito de rolagem na home, iteração 5-6** — não entra antes
-disso. Ao integrar: regras acima valem sem exceção (mudo, nunca no mobile,
+**Ativo:** `fotos/simulacao_afastando_da_casa.mp4` — simulação de afastamento
+da casa, fornecida pelo usuário em 2026-09-11. Preenche a lacuna "drone do
+conjunto com o vale" do §10/`curadoria-fotos.md`. **Uso: seção "Vídeo de
+contexto" do sitemap (§13.2 item 3), adiantado para a iteração 3 a pedido do
+usuário** — prioridade de movimento passou na frente do plano original
+(era 5-6). Ao integrar: regras acima valem sem exceção (mudo, nunca no mobile,
 pausa visível), mais o teto de deslocamento de paralaxe de 12% e a proibição
 de scroll-jacking das "Regras invioláveis" do `CLAUDE.md`.
 
@@ -428,15 +429,20 @@ vezes**: uma faixa compacta logo após o herói (cumpre "prova social cedo" da
 
 1. Header — wordmark tipográfico + CTA (componente único, trocável — §12.1)
 2. Herói — foto de abertura + frase-síntese (§2)
-3. Faixa de prova social — 5,0★/74, Superhost 7 anos, top 5%
-4. A casa — promessa, 14 hóspedes/6 suítes, privacidade
-5. Por dentro — ambientes internos
-6. O que fazer — piscina, beach tennis, pomar, haras, fogueira, gourmet
-7. Quem recebe — Ana Camila e as caseiras (hospitalidade é a nº1 das menções)
-8. O que dizem — avaliações completas, com citação real
-9. Onde fica / como chegar
-10. Reservar — CTA final
-11. Footer — contato, Instagram, endereço
+3. **Vídeo de contexto** — `simulacao_afastando_da_casa.mp4` ligado à rolagem,
+   casa fecha em cima e revela o vale/haras ao redor. Adicionado na iteração 3,
+   ver §9 para as regras específicas. **Desktop/tablet only** — no mobile a
+   seção não existe, o herói já cumpre a função de orientar (§10 hard rule:
+   sem vídeo de fundo no celular).
+4. Faixa de prova social — 5,0★/74, Superhost 7 anos, top 5%
+5. A casa — promessa, 14 hóspedes/6 suítes, privacidade
+6. Por dentro — ambientes internos
+7. O que fazer — piscina, beach tennis, pomar, haras, fogueira, gourmet
+8. Quem recebe — Ana Camila e as caseiras (hospitalidade é a nº1 das menções)
+9. O que dizem — avaliações completas, com citação real
+10. Onde fica / como chegar
+11. Reservar — CTA final
+12. Footer — contato, Instagram, endereço
 
 ### 13.3 Referências
 
