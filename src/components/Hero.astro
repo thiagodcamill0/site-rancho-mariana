@@ -1,107 +1,51 @@
 ---
-// Sitemap §13.2 item 2 (DESIGN.md, revisado it. 8): "Herói
-// cinematográfico" — fusão do antigo Hero (item 2, foto estática) com
-// o antigo "Vídeo de contexto" (item 3, seção separada da it. 3), a
-// pedido do usuário. Frase-síntese: DESIGN.md §2, exceção documentada
+// Sitemap §13.2 item 2. Frase-síntese: DESIGN.md §2, exceção documentada
 // às 7 palavras.
 //
-// Vídeo: fotos/camera_pullback_faster_download_1080p.mp4 — ver §9
-// "Ativo". Substitui simulacao_afastando_da_casa.mp4: mesmo conteúdo
-// (casa fecha em cima, depois se afasta revelando o vale/haras), mas
-// mais eficiente por bit — medido nesta sessão via headless Chromium
-// (sem ffmpeg disponível): 1920×1080/10s a ~6,6 Mbps, contra
-// 1200×900/6s a ~7,7 Mbps antes. O arquivo em si é maior em bytes
-// (mais resolução e duração), mas entrega ~2,7× mais conteúdo por bit.
+// Revertido em 2026-09-11 (DESIGN.md §9/§13.2): a it. 8 tinha fundido
+// este herói com um vídeo de rolagem numa "abertura cinematográfica" —
+// corrigimos scroll-jacking, sticky quebrado e travamento de buffer
+// nesse meio-tempo, mas o usuário pediu pra voltar a uma imagem fixa
+// no mesmo dia. Volta ao Efeito 2 da §9: paralaxe em foto full-bleed
+// (foto mais lenta que o texto, teto de 12% da altura), a mesma
+// técnica de antes da it. 8, agora sobre fotos/home.png.
 //
-// Regras da fusão (DESIGN.md §9 "Decisão de fusão", sem exceção):
-// - Abre no primeiro frame: pôster com fetchpriority="high" (elegível
-//   a LCP) e headline/CTA visíveis imediatamente, sem esperar rolagem.
-// - Ao rolar, o mesmo vídeo faz o scrub que antes vivia numa seção
-//   separada — position:sticky (mesma técnica da it. 3), nunca
-//   scroll-jacking: a velocidade/direção da rolagem é 100% do usuário.
-// - Texto fica fixo (pinned) a rolagem inteira, sobre o véu — por
-//   estar sempre dentro do stage sticky, nunca perde legibilidade,
-//   não só "no topo".
-// - Sem paralaxe CSS aqui (a versão estática tinha): o próprio vídeo
-//   já entrega "profundidade de paisagem" de um jeito muito mais
-//   direto que o deslocamento de 12% simulava — usar os dois juntos
-//   brigaria um com o outro em vez de somar.
-// - Suavização nova (it. 8): currentTime não iguala a posição de
-//   rolagem 1:1 (como na it. 3) — interpola (lerp) em direção ao alvo
-//   a cada frame, pra não saltar em rolagem rápida/arremessada.
-// - Mobile: pôster estático, mesmo enquadramento/véu do desktop, sem
-//   vídeo, sem scroll-scrub, sem o botão de play — ausência total, não
-//   degradação (§10 hard rule: sem vídeo de fundo no celular).
-// - prefers-reduced-motion: sem scroll-scrub — pôster + botão de play
-//   manual, pausado por padrão, toca só sob ação explícita.
+// home.png é gerado por IA (mesma origem do vídeo revertido) —
+// decisão consciente do usuário, já registrada em DESIGN.md §11 item
+// 7, não precisa reconfirmar aqui.
 import { Picture } from 'astro:assets';
-import poster from '../assets/poster-hero.jpg';
+import fachada from '../../fotos/home.png';
 import CTABotao from './CTABotao.astro';
 ---
 
-<section id="hero" class="hero" aria-labelledby="hero-titulo">
-  <div class="hero__stage">
-    <div class="hero__media">
-      <Picture
-        src={poster}
-        alt="Fachada da casa principal do Rancho Mariana ao entardecer, luz dourada sobre o telhado de telha cerâmica, jardim e varanda com redes."
-        class="hero__poster"
-        formats={['avif', 'webp']}
-        fallbackFormat="jpg"
-        widths={[480, 768, 1200, 1920]}
-        sizes="100vw"
-        fetchpriority="high"
-        loading="eager"
-      />
-      <!-- Sem atributo poster no <video>: a <Picture> acima já mostra
-           o quadro estático e é o elemento elegível a LCP. O vídeo só
-           ganha opacidade depois de ter um quadro de fato decodificado
-           (evento loadeddata, não loadedmetadata) — nunca aparece
-           preto/quebrado por cima do pôster.
-
-           preload="auto" (não "none"): diagnosticado nesta rodada que
-           o Chromium para de baixar o vídeo sozinho depois de ~3s de
-           buffer e fica em networkState "idle" indefinidamente, porque
-           nunca chamamos .play() no scroll-scrub — só currentTime.
-           Sem sinalizar preload="auto", ele nunca volta a baixar o
-           resto, e toda busca (seek) pra além do buffer vira uma
-           parada real de rede — é isso que sentia "travado", não o
-           ritmo das escritas de currentTime. -->
-      <video class="hero__video" muted playsinline preload="auto" aria-hidden="true" tabindex="-1">
-        <source data-src="/videos/camera_pullback_faster_download_1080p.mp4" type="video/mp4" />
-      </video>
-    </div>
-    <div class="hero__veu" aria-hidden="true"></div>
-    <div class="hero__conteudo container" data-reveal>
-      <span class="eyebrow hero__eyebrow">Rancho Mariana · Brotas, SP</span>
-      <h1 id="hero-titulo" class="display hero__frase">
-        Uma casa inteira, um vale inteiro, e o resto do mundo longe.
-      </h1>
-      <p class="hero__promessa">
-        A casa inteira, cuidada em cada detalhe, com privacidade absoluta e
-        vista para o vale — e uma anfitriã que responde em uma hora.
-      </p>
-      <p class="sr-only">
-        Vídeo mostra a casa se afastando aos poucos, revelando o vale e o
-        haras ao redor.
-      </p>
-      <div class="hero__acoes">
-        <CTABotao />
-        <button
-          type="button"
-          class="botao-icone hero__controle"
-          data-video-toggle
-          aria-label="Reproduzir vídeo"
-        >
-          <svg data-icon-play viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M8 5v14l11-7z"></path>
-          </svg>
-          <svg data-icon-pause viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M6 5h4v14H6zm8 0h4v14h-4z"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
+<section class="hero" data-parallax-container aria-labelledby="hero-titulo">
+  <!-- fallbackFormat="jpg" mesmo a fonte sendo .png: o fallback em png
+       saía de 358KB a 4,1MB (lossless, cena fotográfica) — jpg é o
+       padrão já usado em todas as outras fotos do site e cai pra uma
+       fração disso sem perda visível para o público-alvo do fallback. -->
+  <Picture
+    src={fachada}
+    alt="Fachada da casa principal do Rancho Mariana ao entardecer, luz dourada sobre o telhado de telha cerâmica, redes na varanda e luzes acesas por dentro."
+    class="hero__imagem"
+    data-parallax
+    formats={['avif', 'webp']}
+    fallbackFormat="jpg"
+    widths={[480, 768, 1200, 1920]}
+    sizes="100vw"
+    fetchpriority="high"
+    loading="eager"
+  />
+  <div class="hero__veu" aria-hidden="true"></div>
+  <div class="hero__conteudo container" data-reveal>
+    <span class="eyebrow hero__eyebrow">Rancho Mariana · Brotas, SP</span>
+    <h1 id="hero-titulo" class="display hero__frase">
+      Uma casa inteira, um vale inteiro, e o resto do mundo longe.
+    </h1>
+    <p class="hero__promessa">
+      A casa inteira, cuidada em cada detalhe, com privacidade absoluta e
+      vista para o vale — e uma anfitriã que responde em uma hora.
+    </p>
+    <CTABotao />
   </div>
 </section>
 
@@ -109,77 +53,26 @@ import CTABotao from './CTABotao.astro';
   .hero {
     position: relative;
     width: 100%;
+    /* aspect-ratio 4/5 uniforme em todas as larguras agora — sem
+       vídeo, não há mais divisão desktop/mobile pra essa seção nem
+       position:sticky, então overflow:hidden aqui não tem o risco que
+       tinha na versão em vídeo (it. 8). */
     aspect-ratio: 4 / 5;
-    /* overflow:hidden NÃO vai aqui — .hero é ancestral de .hero__stage
-       (position:sticky em desktop), e overflow diferente de visible em
-       QUALQUER ancestral entre um elemento sticky e seu contêiner de
-       rolagem quebra o sticky (ele passa a rolar junto como bloco
-       normal). .hero__stage abaixo já tem overflow:hidden próprio —
-       aplicado nele mesmo, não num ancestral, então não quebra nada e
-       ainda recorta a mídia certinho tanto no mobile quanto no
-       desktop. */
-  }
-
-  @media (min-width: 768px) {
-    .hero {
-      aspect-ratio: unset;
-      /* altura extra = distância de rolagem que alimenta o scrub do
-         vídeo (mesma lógica do antigo Vídeo de contexto, it. 3). */
-      height: 250vh;
-    }
-  }
-
-  /* sem scroll-scrub: vira uma tela só, sem distância extra pra rolar
-     por baixo — mesmo tratamento que o antigo Vídeo de contexto usava. */
-  @media (min-width: 768px) and (prefers-reduced-motion: reduce) {
-    .hero {
-      height: 100vh;
-    }
-  }
-
-  .hero__stage {
-    position: relative;
-    width: 100%;
-    height: 100%;
     overflow: hidden;
   }
 
-  @media (min-width: 768px) {
-    .hero__stage {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-    }
-  }
-
-  @media (min-width: 768px) and (prefers-reduced-motion: reduce) {
-    .hero__stage {
-      position: static;
-    }
-  }
-
-  .hero__media {
+  .hero__imagem {
     position: absolute;
-    inset: 0;
-  }
-
-  .hero__poster,
-  .hero__video {
-    position: absolute;
-    inset: 0;
+    left: 0;
+    /* altura maior que a caixa (130%) + recuo negativo (-15%): dá
+       margem de sobra pro paralaxe (Efeito 2, motion.js) deslocar a
+       foto até 12% da altura sem abrir vão nas bordas — object-fit:
+       cover já recorta o excesso, então isso não muda o enquadramento. */
+    top: -15%;
     width: 100%;
-    height: 100%;
+    height: 130%;
     object-fit: cover;
-    object-position: center 40%;
-  }
-
-  .hero__video {
-    opacity: 0;
-    transition: opacity 600ms cubic-bezier(.16, 1, .3, 1);
-  }
-
-  .hero__video.is-active {
-    opacity: 1;
+    object-position: center 42%;
   }
 
   /* véu vertical monocromático — único degradê permitido, DESIGN.md §7 */
@@ -230,190 +123,4 @@ import CTABotao from './CTABotao.astro';
     max-width: 42ch;
     margin: 0;
   }
-
-  .hero__acoes {
-    display: flex;
-    align-items: center;
-    gap: var(--space-12);
-  }
-
-  /* botão de play/pausa só existe onde o vídeo existe — ausente no
-     celular junto com o resto do aparato de vídeo. */
-  .hero__controle {
-    display: none;
-  }
-
-  @media (min-width: 768px) {
-    .hero__controle {
-      display: inline-flex;
-    }
-  }
 </style>
-
-<script>
-  // Herói cinematográfico — vídeo ligado à rolagem. Fusão dos antigos
-  // efeitos 2 (herói estático) e 3 (vídeo de contexto) da it. 3, a
-  // pedido do usuário na it. 8. Ver comentário de topo do arquivo.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isDesktop = () => window.matchMedia('(min-width: 768px)').matches;
-
-  function updateToggleUI(button: HTMLElement, isPlaying: boolean) {
-    button.setAttribute('aria-label', isPlaying ? 'Pausar vídeo' : 'Reproduzir vídeo');
-    button.classList.toggle('is-playing', isPlaying);
-  }
-
-  function initHero() {
-    const section = document.getElementById('hero');
-    if (!section) return;
-    if (!isDesktop()) return; // mobile: só o pôster estático, nada de JS de vídeo
-
-    const video = section.querySelector<HTMLVideoElement>('.hero__video');
-    const source = video?.querySelector<HTMLSourceElement>('source');
-    const toggle = section.querySelector<HTMLButtonElement>('[data-video-toggle]');
-    if (!video || !source || !toggle) return;
-
-    let loaded = false;
-    let scrubbing = !reduceMotion;
-    let displayedTime = 0;
-    let looping = false;
-
-    function loadVideo() {
-      if (loaded) return;
-      loaded = true;
-      source!.src = source!.dataset.src || '';
-      video!.load();
-      // loadeddata (não loadedmetadata): só troca pro vídeo quando já
-      // existe um quadro decodificado de verdade — nunca mostra preto.
-      video!.addEventListener('loadeddata', () => video!.classList.add('is-active'), { once: true });
-    }
-
-    // Suavização (it. 8, pedido do usuário): em vez de igualar
-    // currentTime 1:1 à posição de rolagem (it. 3), interpola o tempo
-    // exibido em direção ao alvo a cada frame — sem isso, rolagem
-    // rápida/arremessada fazia o vídeo saltar em vez de deslizar.
-    const LERP = 0.12;
-    const EPSILON = 0.02; // segundos — abaixo disso, considera resolvido
-
-    // Correção "extremamente travado" (it. 8, relato real do usuário):
-    // medido nesta sessão via Playwright (rAF instrumentado +
-    // performance.now() em scroll contínuo simulado) que o loop de rAF
-    // em si roda liso (~11ms/frame, zero frame acima de 25ms) — o
-    // gargalo não é o JS. O que trava é o vídeo: escrever currentTime
-    // a ~60x/s faz o navegador buscar (seek) mais rápido do que
-    // consegue baixar/decodificar — medido buffered ficando bem atrás
-    // de currentTime (ex.: buffered até 3,2s com currentTime já em
-    // 5,1s) e o readyState caindo de HAVE_ENOUGH_DATA pra
-    // HAVE_METADATA no meio da rolagem. A correção: limitar a escrita
-    // real de currentTime a ~24 buscas/segundo (a matemática do lerp
-    // continua rodando a cada frame de rAF, só a gravação em si é
-    // que espaça) — dá tempo do navegador terminar cada seek antes do
-    // próximo, em vez de empilhar pedidos.
-    const SEEK_INTERVAL_MS = 1000 / 24;
-    let lastSeekAt = 0;
-
-    function targetTime(): number | null {
-      const rect = section!.getBoundingClientRect();
-      const scrollable = rect.height - window.innerHeight;
-      if (!video!.duration || Number.isNaN(video!.duration) || scrollable <= 0) return null;
-      const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
-      return progress * video!.duration;
-    }
-
-    function step(now: number) {
-      const target = scrubbing ? targetTime() : null;
-      let continueLoop = false;
-      if (target !== null) {
-        displayedTime += (target - displayedTime) * LERP;
-        const settled = Math.abs(target - displayedTime) < EPSILON;
-        if (settled) displayedTime = target;
-        // grava sempre que o "gate" de ~42ms libera, e também na
-        // última escrita antes de parar o loop — pra nunca sobrar um
-        // quadro visivelmente atrasado do valor já calculado.
-        if (settled || now - lastSeekAt >= SEEK_INTERVAL_MS) {
-          video!.currentTime = displayedTime;
-          lastSeekAt = now;
-        }
-        continueLoop = !settled;
-      }
-      if (continueLoop) {
-        requestAnimationFrame(step);
-      } else {
-        looping = false;
-      }
-    }
-
-    function kick() {
-      if (!looping) {
-        looping = true;
-        requestAnimationFrame(step);
-      }
-    }
-
-    video.addEventListener('play', () => updateToggleUI(toggle, true));
-    video.addEventListener('pause', () => {
-      updateToggleUI(toggle, false);
-      // Só congela o quadro — NÃO reengata o scroll-sync aqui. Fazer
-      // isso na hora causava um "rebobinar" visível de volta pra
-      // posição implicada pela rolagem (Checker flagou: pulo de 9.32s
-      // pra 2.78s ao pausar). displayedTime sincroniza com o
-      // currentTime real (que andou sozinho durante o play nativo)
-      // pra o próximo scroll — quando reengatar de fato — partir do
-      // quadro certo, sem pulo. O listener de 'scroll' mais abaixo é
-      // quem religa scrubbing=true, só quando o usuário rolar de novo.
-      if (!reduceMotion) {
-        displayedTime = video!.currentTime;
-      }
-    });
-    video.addEventListener('ended', () => {
-      if (!reduceMotion) {
-        displayedTime = video!.currentTime;
-        scrubbing = true;
-        kick();
-      }
-    });
-
-    if (reduceMotion) {
-      // sem scroll-scrub: só toca sob ação explícita, pausado por padrão
-      toggle.addEventListener('click', () => {
-        loadVideo();
-        video.paused ? video.play() : video.pause();
-      });
-      return;
-    }
-
-    // Conteúdo de primeira dobra: carrega já, sem adiar até aproximar
-    // via scroll (o antigo Vídeo de contexto adiava porque vinha
-    // depois de outra seção; aqui já é o que abre a página). O
-    // <Picture> com fetchpriority="high" continua sendo o elemento
-    // elegível a LCP — o vídeo entra por cima só depois, sem competir.
-    loadVideo();
-
-    // Uma rolagem de verdade é o único gatilho que reengata o
-    // scroll-sync depois de uma pausa manual — não o ato de pausar em
-    // si (ver comentário no listener de 'pause' acima).
-    window.addEventListener(
-      'scroll',
-      () => {
-        scrubbing = true;
-        kick();
-      },
-      { passive: true }
-    );
-    kick(); // estado inicial (topo da página, alvo = 0)
-
-    toggle.addEventListener('click', () => {
-      if (video.paused) {
-        scrubbing = false;
-        video.play();
-      } else {
-        video.pause();
-      }
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHero);
-  } else {
-    initHero();
-  }
-</script>

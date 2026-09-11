@@ -3,9 +3,10 @@
 // narrativa da §6: chegada → casa → o que fazer → quem recebe → o que
 // dizem → onde fica → reservar.
 //
-// It. 8: Hero agora é o "Herói cinematográfico" fundido (frase-síntese
-// + CTA sobre o vídeo de afastamento ligado à rolagem) — o antigo
-// componente VideoContexto separado foi incorporado nele e removido.
+// Histórico do Hero: a it. 8 tinha fundido um vídeo de rolagem nele
+// ("herói cinematográfico"), incorporando o antigo componente
+// VideoContexto separado. Revertido no mesmo dia a pedido do usuário
+// (DESIGN.md §9/§13.2) — Hero volta a ser imagem fixa com paralaxe.
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';

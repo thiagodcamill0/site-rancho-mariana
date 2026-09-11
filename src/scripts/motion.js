@@ -14,12 +14,12 @@
 //    produto real é a paisagem e a distância, e o movimento comunica
 //    essa camada, não decora por decorar.
 //
-// O efeito 3 (vídeo do herói ligado à rolagem, com suavização/lerp) tem
-// lógica própria em src/components/Hero.astro (fundido lá desde a it.
-// 8, antes vivia em VideoContexto.astro como seção separada) —
-// específico demais para morar aqui, e mais fácil de revisar isolado.
-// Por isso o herói não usa mais [data-parallax]: o próprio vídeo já
-// entrega a profundidade que a paralaxe simulava na versão estática.
+// Histórico: a it. 8 tinha um vídeo de herói ligado à rolagem (efeito
+// 3, com suavização/lerp), que vivia em src/components/Hero.astro. O
+// próprio dia revertido (DESIGN.md §9) — o herói voltou a ser imagem
+// fixa com paralaxe (Efeito 2, igual a qualquer outra faixa full-bleed
+// aqui), usando de novo a mesma marcação [data-parallax] cross-cutting
+// deste arquivo.
 //
 // prefers-reduced-motion corta o efeito 2 inteiro (nenhum transform é
 // aplicado) e corta o deslocamento do efeito 1 via CSS global
