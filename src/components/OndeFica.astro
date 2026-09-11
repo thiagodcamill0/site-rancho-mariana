@@ -2,6 +2,11 @@
 // Sitemap §13.2 item 9. Distâncias só as citadas em CLAUDE.md / DESIGN.md
 // §1 e "Onde fica". Sem foto de mapa ou drone disponível nesta rodada
 // (nenhuma das 15 fotos cobre isso — DESIGN.md §10 já registra a lacuna).
+//
+// It. 6 (teste da troca): link real do Google Maps do próprio anúncio
+// (Material/pesquisa-fontes.md) — primeiro uso real do botão terciário
+// do sistema (§8), que até aqui só existia como variante não usada.
+const MAPS_URL = 'https://goo.gl/maps/f9L7trcKenYFYUa79';
 const distancias = [
   { lugar: 'Centro de Brotas', distancia: '4,5 km' },
   { lugar: 'Parque Campana', distancia: '1,5 km' },
@@ -18,6 +23,9 @@ const distancias = [
         Destino de ecoturismo, com a casa dentro de um haras — 17380-000,
         Brotas/SP.
       </p>
+      <a href={MAPS_URL} class="botao botao--terciario" target="_blank" rel="noopener noreferrer">
+        Ver no mapa
+      </a>
     </div>
     <ul class="ondefica__lista">
       {
@@ -48,6 +56,7 @@ const distancias = [
   .ondefica__texto {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-16);
   }
 

@@ -1,16 +1,23 @@
 ---
 // Sitemap §13.2 item 8 — seção completa de avaliações, na posição
 // narrativa (a faixa compacta já cobriu "prova social cedo" na §6).
-// Citação e vocabulário: únicos disponíveis em CLAUDE.md / DESIGN.md §2
-// sem o Material/pesquisa-fontes.md completo (ver nota no relatório).
-const palavras = [
-  'sossego',
-  'privacidade',
-  'vista',
-  'vale',
-  'se sentir em casa',
-  'cada detalhe',
-  'voltar',
+// It. 6 (teste da troca): a citação única + lista de adjetivos soltos
+// funcionava pra qualquer casa de campo. Trocado por mais três falas
+// reais e pela contagem real de menções por tema — ambos direto de
+// Material/pesquisa-fontes.md, que não estava disponível quando este
+// componente foi escrito na it. 1.
+const maisCitacoes = [
+  '"A gente se sente em casa."',
+  '"Vista exuberante do vale, algo para ficar contemplando."',
+  '"Voltaremos com certeza" — frase recorrente nas avaliações.',
+];
+
+const mencoes = [
+  { tema: 'Hospitalidade', contagem: 49 },
+  { tema: 'Família', contagem: 25 },
+  { tema: 'Limpeza', contagem: 23 },
+  { tema: 'Espaço interno', contagem: 20 },
+  { tema: 'Vista', contagem: 19 },
 ];
 ---
 
@@ -22,15 +29,19 @@ const palavras = [
     </div>
 
     <blockquote class="oquedizem__quote h2">
-      "É ainda mais bonito que nas fotos."
+      "É até mais bonito que nas fotos."
     </blockquote>
     <p class="corpo-secundario oquedizem__nota">
       Frase repetida por três hóspedes diferentes, de forma independente,
       nas avaliações do Airbnb.
     </p>
 
+    <ul class="oquedizem__mais-citacoes corpo-secundario">
+      {maisCitacoes.map((c) => <li>{c}</li>)}
+    </ul>
+
     <ul class="oquedizem__tags">
-      {palavras.map((p) => <li class="oquedizem__tag">{p}</li>)}
+      {mencoes.map((m) => <li class="oquedizem__tag">{m.tema} · {m.contagem}</li>)}
     </ul>
   </div>
 </section>
@@ -44,6 +55,14 @@ const palavras = [
 
   .oquedizem__nota {
     margin-top: var(--space-8);
+  }
+
+  .oquedizem__mais-citacoes {
+    margin-top: var(--space-24);
+    max-width: var(--text-measure);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
   }
 
   .oquedizem__tags {
