@@ -53,23 +53,49 @@ import CTABotao from './CTABotao.astro';
   .hero {
     position: relative;
     width: 100%;
-    /* aspect-ratio 4/5 uniforme em todas as larguras agora — sem
-       vídeo, não há mais divisão desktop/mobile pra essa seção nem
-       position:sticky, então overflow:hidden aqui não tem o risco que
-       tinha na versão em vídeo (it. 8). */
+    /* 4/5 é regra de MOBILE (DESIGN.md §10: "No mobile, herói em
+       aspect-ratio entre 4/5 e 1/1... nunca cortar paisagem pra 16/9
+       no celular"). fotos/home.png é paisagem (1672×941) — forçar essa
+       caixa estreita em telas largas também (bug corrigido aqui)
+       cortava a maior parte da largura e ampliava o resto, lendo como
+       foto de baixa resolução/zoom exagerado. Acima de 768px a caixa
+       volta a ser larga (16/10), como já era antes da it. 8. */
     aspect-ratio: 4 / 5;
     overflow: hidden;
   }
 
+  @media (min-width: 768px) {
+    .hero {
+      /* width:100% acima evita que o aspect-ratio "encolha" a largura
+         quando max-height entra em vigor em telas largas e baixas
+         (ex.: 1440×900) — sem isso o box de largura automática é
+         recalculado a partir da altura travada, e a foto deixa de
+         sangrar até a borda (mesmo bug já corrigido na it. 2). */
+      aspect-ratio: 16 / 10;
+      max-height: 92vh;
+    }
+  }
+
   .hero__imagem {
     position: absolute;
-    left: 0;
-    /* altura maior que a caixa (130%) + recuo negativo (-15%): dá
-       margem de sobra pro paralaxe (Efeito 2, motion.js) deslocar a
-       foto até 12% da altura sem abrir vão nas bordas — object-fit:
-       cover já recorta o excesso, então isso não muda o enquadramento. */
+    /* Inflação SIMÉTRICA (130% nas duas dimensões, -15% nos dois
+       eixos) — não só na altura: inflar só a altura (como antes)
+       muda a proporção da caixa que o object-fit:cover enxerga,
+       cortando a largura bem mais do que o container real pede. Com
+       as duas dimensões escaladas pelo mesmo fator, a proporção da
+       caixa inflada continua igual à do container, e o corte final
+       fica idêntico ao de um cover normal — só que com folga de 15%
+       pro paralaxe (Efeito 2, motion.js) deslocar até 12% sem abrir
+       vão nas bordas. */
+    left: -15%;
     top: -15%;
-    width: 100%;
+    /* max-width:none: o reset global (img{max-width:100%}) grudava a
+       largura em 100% mesmo com width:130% abaixo — a imagem ficava
+       deslocada (left:-15%) sem a largura extra pra compensar, abrindo
+       um vão real do lado direito. Bug pego olhando o resultado
+       renderizado, não só o build. */
+    max-width: none;
+    width: 130%;
     height: 130%;
     object-fit: cover;
     object-position: center 42%;
