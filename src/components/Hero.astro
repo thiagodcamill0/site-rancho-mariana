@@ -101,7 +101,14 @@ import CTABotao from './CTABotao.astro';
     position: relative;
     width: 100%;
     aspect-ratio: 4 / 5;
-    overflow: hidden;
+    /* overflow:hidden NÃO vai aqui — .hero é ancestral de .hero__stage
+       (position:sticky em desktop), e overflow diferente de visible em
+       QUALQUER ancestral entre um elemento sticky e seu contêiner de
+       rolagem quebra o sticky (ele passa a rolar junto como bloco
+       normal). .hero__stage abaixo já tem overflow:hidden próprio —
+       aplicado nele mesmo, não num ancestral, então não quebra nada e
+       ainda recorta a mídia certinho tanto no mobile quanto no
+       desktop. */
   }
 
   @media (min-width: 768px) {
@@ -310,13 +317,21 @@ import CTABotao from './CTABotao.astro';
     video.addEventListener('play', () => updateToggleUI(toggle, true));
     video.addEventListener('pause', () => {
       updateToggleUI(toggle, false);
+      // Só congela o quadro — NÃO reengata o scroll-sync aqui. Fazer
+      // isso na hora causava um "rebobinar" visível de volta pra
+      // posição implicada pela rolagem (Checker flagou: pulo de 9.32s
+      // pra 2.78s ao pausar). displayedTime sincroniza com o
+      // currentTime real (que andou sozinho durante o play nativo)
+      // pra o próximo scroll — quando reengatar de fato — partir do
+      // quadro certo, sem pulo. O listener de 'scroll' mais abaixo é
+      // quem religa scrubbing=true, só quando o usuário rolar de novo.
       if (!reduceMotion) {
-        scrubbing = true; // volta a acompanhar a rolagem
-        kick(); // resincroniza já, sem esperar o próximo scroll
+        displayedTime = video!.currentTime;
       }
     });
     video.addEventListener('ended', () => {
       if (!reduceMotion) {
+        displayedTime = video!.currentTime;
         scrubbing = true;
         kick();
       }
@@ -338,7 +353,17 @@ import CTABotao from './CTABotao.astro';
     // elegível a LCP — o vídeo entra por cima só depois, sem competir.
     loadVideo();
 
-    window.addEventListener('scroll', kick, { passive: true });
+    // Uma rolagem de verdade é o único gatilho que reengata o
+    // scroll-sync depois de uma pausa manual — não o ato de pausar em
+    // si (ver comentário no listener de 'pause' acima).
+    window.addEventListener(
+      'scroll',
+      () => {
+        scrubbing = true;
+        kick();
+      },
+      { passive: true }
+    );
     kick(); // estado inicial (topo da página, alvo = 0)
 
     toggle.addEventListener('click', () => {
