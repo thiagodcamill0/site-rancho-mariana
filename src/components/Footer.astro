@@ -1,0 +1,100 @@
+---
+// Sitemap §13.2 item 11. Contatos reais: CLAUDE.md — @rancho_mariana,
+// Airbnb 39741558, (14) 99623-7904, Brotas/SP 17380-000.
+const anoAtual = new Date().getFullYear();
+---
+
+<footer class="rodape">
+  <div class="container rodape__grid">
+    <div>
+      <span class="rodape__wordmark">Rancho Mariana</span>
+      <p class="corpo-secundario">Casa de campo por temporada · Brotas/SP, 17380-000</p>
+    </div>
+    <ul class="rodape__lista corpo-secundario">
+      <li>
+        <a href="https://instagram.com/rancho_mariana" target="_blank" rel="noopener noreferrer">
+          @rancho_mariana
+        </a>
+      </li>
+      <li>
+        <a href="https://wa.me/5514996237904" target="_blank" rel="noopener noreferrer">
+          (14) 99623-7904
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.airbnb.com.br/rooms/39741558"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Anúncio no Airbnb
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <p class="corpo-secundario rodape__copy">&copy; {anoAtual} Rancho Mariana.</p>
+  </div>
+</footer>
+
+<style>
+  .rodape {
+    background: var(--ink);
+    padding-block: var(--space-48);
+    color: var(--paper);
+  }
+
+  .rodape__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-24);
+    padding-bottom: var(--space-24);
+    border-bottom: 1px solid rgba(var(--paper-rgb), 0.2);
+  }
+
+  @media (min-width: 760px) {
+    .rodape__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .rodape__wordmark {
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    color: var(--paper);
+  }
+
+  /* --terra-soft não pode ser cor de texto (DESIGN.md §4.3) — opacidade
+     sobre --paper diferencia o secundário sem sair da paleta. */
+  .rodape p {
+    color: var(--paper);
+    opacity: 0.72;
+  }
+
+  .rodape__lista {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  /* alvo de toque 48px (DESIGN.md §8, "sempre") — cresce a área
+     clicável sem mudar o tamanho visual do texto. */
+  .rodape__lista a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding-block: var(--space-12);
+    color: var(--paper);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    opacity: 0.85;
+  }
+
+  .rodape__lista a:hover {
+    opacity: 1;
+  }
+
+  .rodape__copy {
+    margin-top: var(--space-16);
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+// Sitemap §13.2 item 9. Distâncias só as citadas em CLAUDE.md / DESIGN.md
+// §1 e "Onde fica". Sem foto de mapa ou drone disponível nesta rodada
+// (nenhuma das 15 fotos cobre isso — DESIGN.md §10 já registra a lacuna).
+const distancias = [
+  { lugar: 'Centro de Brotas', distancia: '4,5 km' },
+  { lugar: 'Parque Campana', distancia: '1,5 km' },
+  { lugar: 'Cachoeira do Martelo', distancia: '6 km' },
+];
+---
+
+<section class="secao secao--alt ondefica">
+  <div class="container ondefica__grid">
+    <div class="ondefica__texto">
+      <span class="eyebrow">Onde fica</span>
+      <h2 class="h1">Brotas/SP, no caminho do autódromo Raceville.</h2>
+      <p>
+        Destino de ecoturismo, com a casa dentro de um haras — 17380-000,
+        Brotas/SP.
+      </p>
+    </div>
+    <ul class="ondefica__lista">
+      {
+        distancias.map((d) => (
+          <li class="ondefica__item">
+            <span class="numero-destaque ondefica__numero">{d.distancia}</span>
+            <span class="corpo-secundario">{d.lugar}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ondefica__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+  }
+
+  @media (min-width: 760px) {
+    .ondefica__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .ondefica__texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .ondefica__lista {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .ondefica__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-bottom: var(--space-24);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ondefica__item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .ondefica__numero {
+    font-size: var(--fs-h1);
+  }
+</style>

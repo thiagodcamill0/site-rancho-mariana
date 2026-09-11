@@ -1,0 +1,49 @@
+---
+// Sitemap §13.2 item 1: wordmark tipográfico + CTA único. Sem logo —
+// PROMPT.md "Bloqueios conhecidos" §3: nome tratado como wordmark.
+import CTABotao from './CTABotao.astro';
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <span class="header__wordmark">Rancho Mariana</span>
+    <CTABotao variante="secundario" rotulo="Reservar" class="header__cta" />
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-12);
+  }
+
+  .header__wordmark {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  /* Botão do header continua com os 48px mínimos do §8 — só o padding
+     horizontal encolhe no mobile para caber ao lado do wordmark. */
+  .header__cta {
+    padding-inline: var(--space-16);
+  }
+
+  @media (min-width: 480px) {
+    .header__cta {
+      padding-inline: var(--btn-pad-inline);
+    }
+  }
+</style>

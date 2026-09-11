@@ -1,0 +1,69 @@
+---
+// Sitemap §13.2 item 7. Sem foto: DESIGN.md §10 registra como lacuna a
+// produzir "nenhum retrato da Ana Camila" — nesta rodada a seção é só
+// texto, em vez de usar uma foto de outro ambiente para representar
+// pessoas que ela não mostra. Sinalizado no relatório ao Orquestrador.
+---
+
+<section class="secao secao--alt quemrecebe">
+  <div class="container quemrecebe__grid">
+    <div class="quemrecebe__texto">
+      <span class="eyebrow">Quem recebe</span>
+      <h2 class="h1">Ana Camila e as caseiras cuidam de cada detalhe.</h2>
+      <p>
+        Hospitalidade é o item mais citado nas avaliações do Rancho
+        Mariana — 49 menções. Taxa de resposta de 100%, com retorno em até
+        uma hora.
+      </p>
+      <blockquote class="quemrecebe__quote">
+        "Tem lugares que fazem a gente lembrar que não precisa de muito
+        para viver dias especiais."
+      </blockquote>
+    </div>
+    <div class="quemrecebe__stat">
+      <span class="numero-destaque">49</span>
+      <span class="corpo-secundario">menções de hospitalidade nas avaliações</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .quemrecebe__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+    align-items: center;
+  }
+
+  @media (min-width: 760px) {
+    .quemrecebe__grid {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .quemrecebe__texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .quemrecebe__quote {
+    margin: 0;
+    padding-left: var(--space-16);
+    border-left: 2px solid var(--terra-soft);
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-style: italic;
+    color: var(--ink-2);
+  }
+
+  .quemrecebe__stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--card-pad);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+  }
+</style>

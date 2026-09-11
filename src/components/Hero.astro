@@ -1,0 +1,109 @@
+---
+// Sitemap §13.2 item 2. Foto: DESIGN.md §13.4 — escolha interina
+// 01-fachada-principal-perspectiva.jpg (sky livre à esquerda).
+// Frase-síntese: DESIGN.md §2, exceção documentada às 7 palavras.
+import { Picture } from 'astro:assets';
+import fachada from '../../fotos/01-fachada-principal-perspectiva.jpg';
+import CTABotao from './CTABotao.astro';
+---
+
+<section class="hero">
+  <Picture
+    src={fachada}
+    alt="Fachada da casa principal do Rancho Mariana vista do jardim, com telhado colonial em telha cerâmica, redes na varanda e caminho de pedra entre o gramado e vasos de barro."
+    class="hero__imagem"
+    formats={['avif', 'webp']}
+    fallbackFormat="jpg"
+    widths={[480, 768, 1200, 1600]}
+    sizes="100vw"
+    fetchpriority="high"
+    loading="eager"
+  />
+  <div class="hero__veu" aria-hidden="true"></div>
+  <div class="hero__conteudo container">
+    <span class="eyebrow hero__eyebrow">Rancho Mariana · Brotas, SP</span>
+    <h1 class="display hero__frase">
+      Uma casa inteira, um vale inteiro, e o resto do mundo longe.
+    </h1>
+    <p class="hero__promessa">
+      A casa inteira, cuidada em cada detalhe, com privacidade absoluta e
+      vista para o vale — e uma anfitriã que responde em uma hora.
+    </p>
+    <CTABotao />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      aspect-ratio: 16 / 10;
+      max-height: 92vh;
+    }
+  }
+
+  .hero__imagem {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* horizonte da fachada mantido visível; sky livre à esquerda para o
+       texto — DESIGN.md §13.4 */
+    object-position: center 38%;
+  }
+
+  /* véu vertical monocromático — único degradê permitido, DESIGN.md §7 */
+  .hero__veu {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(var(--veil), 0.72) 0%,
+      rgba(var(--veil), 0.32) 45%,
+      rgba(var(--veil), 0) 75%
+    );
+  }
+
+  .hero__conteudo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-bottom: var(--space-48);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-16);
+  }
+
+  /* --terra-soft não pode ser cor de texto (DESIGN.md §4.3) — sobre o
+     véu escuro usa-se --on-photo, como o resto do conteúdo do herói. */
+  .hero__eyebrow {
+    color: var(--on-photo);
+    opacity: 0.85;
+  }
+
+  .hero__frase {
+    color: var(--on-photo);
+    max-width: 14ch;
+  }
+
+  @media (min-width: 768px) {
+    .hero__frase {
+      max-width: 20ch;
+    }
+  }
+
+  .hero__promessa {
+    color: var(--on-photo);
+    font-size: var(--fs-body);
+    max-width: 42ch;
+    margin: 0;
+  }
+</style>

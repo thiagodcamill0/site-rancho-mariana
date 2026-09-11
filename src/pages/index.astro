@@ -1,0 +1,36 @@
+---
+// Página única, rolagem narrativa — DESIGN.md §13.2. Ordem segue a
+// narrativa da §6: chegada → casa → o que fazer → quem recebe → o que
+// dizem → onde fica → reservar.
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ProvaSocialFaixa from '../components/ProvaSocialFaixa.astro';
+import ACasa from '../components/ACasa.astro';
+import PorDentro from '../components/PorDentro.astro';
+import OQueFazer from '../components/OQueFazer.astro';
+import QuemRecebe from '../components/QuemRecebe.astro';
+import OQueDizem from '../components/OQueDizem.astro';
+import OndeFica from '../components/OndeFica.astro';
+import Reservar from '../components/Reservar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="Rancho Mariana — casa de campo por temporada em Brotas/SP"
+  description="Casa inteira para 14 hóspedes dentro de um haras em Brotas/SP. 6 suítes, piscina climatizada, beach tennis e pomar liberado. 5,0 em 74 avaliações, Superhost há 7 anos."
+>
+  <Header />
+  <main>
+    <Hero />
+    <ProvaSocialFaixa />
+    <ACasa />
+    <PorDentro />
+    <OQueFazer />
+    <QuemRecebe />
+    <OQueDizem />
+    <OndeFica />
+    <Reservar />
+  </main>
+  <Footer />
+</Layout>

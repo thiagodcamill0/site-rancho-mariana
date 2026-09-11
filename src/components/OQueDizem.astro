@@ -1,0 +1,63 @@
+---
+// Sitemap §13.2 item 8 — seção completa de avaliações, na posição
+// narrativa (a faixa compacta já cobriu "prova social cedo" na §6).
+// Citação e vocabulário: únicos disponíveis em CLAUDE.md / DESIGN.md §2
+// sem o Material/pesquisa-fontes.md completo (ver nota no relatório).
+const palavras = [
+  'sossego',
+  'privacidade',
+  'vista',
+  'vale',
+  'se sentir em casa',
+  'cada detalhe',
+  'voltar',
+];
+---
+
+<section class="secao oquedizem">
+  <div class="container">
+    <div class="secao__cabecalho">
+      <span class="eyebrow">O que dizem</span>
+      <h2 class="h1">5,0 em 74 avaliações, Superhost há 7 anos.</h2>
+    </div>
+
+    <blockquote class="oquedizem__quote h2">
+      "É ainda mais bonito que nas fotos."
+    </blockquote>
+    <p class="corpo-secundario oquedizem__nota">
+      Frase repetida por três hóspedes diferentes, de forma independente,
+      nas avaliações do Airbnb.
+    </p>
+
+    <ul class="oquedizem__tags">
+      {palavras.map((p) => <li class="oquedizem__tag">{p}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .oquedizem__quote {
+    margin-top: var(--space-32);
+    color: var(--terra);
+    max-width: 20ch;
+  }
+
+  .oquedizem__nota {
+    margin-top: var(--space-8);
+  }
+
+  .oquedizem__tags {
+    margin-top: var(--space-32);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .oquedizem__tag {
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--radius-pill);
+    background: var(--terra-soft);
+    color: var(--ink);
+    font-size: var(--fs-body-sm);
+  }
+</style>

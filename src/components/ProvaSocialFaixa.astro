@@ -1,0 +1,52 @@
+---
+// Sitemap §13.2 item 3 — faixa compacta logo após o herói.
+// DESIGN.md §6: "prova social cedo... antes da metade da página".
+// Números só os observados em CLAUDE.md / DESIGN.md §1 e §11.
+const stats = [
+  { numero: '5,0', rotulo: 'em 74 avaliações' },
+  { numero: '7 anos', rotulo: 'Superhost' },
+  { numero: 'Top 5%', rotulo: 'das acomodações' },
+  { numero: '100%', rotulo: 'taxa de resposta' },
+];
+---
+
+<section class="faixa">
+  <div class="container faixa__grid">
+    {
+      stats.map((s) => (
+        <div class="faixa__item">
+          <span class="numero-destaque">{s.numero}</span>
+          <span class="corpo-secundario">{s.rotulo}</span>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .faixa {
+    padding-block: var(--space-32);
+    background: var(--surface);
+    border-block: 1px solid var(--line);
+  }
+
+  .faixa__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-24);
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .faixa__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .faixa__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: center;
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+// Sitemap §13.2 item 5 — ambientes internos. Grid 1 col até 760px,
+// 2 acima (DESIGN.md §6); enquadramento vertical de ambiente (§10).
+import { Picture } from 'astro:assets';
+import salaEstar from '../../fotos/09-sala-de-estar.jpg';
+import salaJantar from '../../fotos/10-sala-de-jantar.jpg';
+import cozinha from '../../fotos/11-cozinha-equipada.jpg';
+import suitePainel from '../../fotos/12-quarto-suite-painel.jpg';
+import suiteClara from '../../fotos/13-quarto-suite-claro.jpg';
+import banheiro from '../../fotos/14-banheiro-suite-azul.jpg';
+
+const ambientes = [
+  {
+    img: salaEstar,
+    titulo: 'Sala de estar',
+    alt: 'Sala de estar com sofá de couro, manta de couro bovino e quadros de pássaros na parede de tijolo aparente.',
+  },
+  {
+    img: salaJantar,
+    titulo: 'Sala de jantar',
+    alt: 'Sala de jantar com mesa redonda de madeira, cadeiras de fibra natural e um quadro de frutas na parede.',
+  },
+  {
+    img: cozinha,
+    titulo: 'Cozinha equipada',
+    alt: 'Cozinha equipada com armários brancos, bancada de granito e fogão a gás.',
+  },
+  {
+    img: suitePainel,
+    titulo: 'Suíte',
+    alt: 'Suíte com cama de casal, cabeceira estofada e um quadro de cavalo correndo na parede.',
+  },
+  {
+    img: suiteClara,
+    titulo: 'Suíte',
+    alt: 'Suíte clara com cama de casal, toalhas dobradas em formato decorativo sobre a cama.',
+  },
+  {
+    img: banheiro,
+    titulo: 'Banheiro de suíte',
+    alt: 'Banheiro de suíte com azulejo azul-marinho, pia branca e espelho emoldurado em ladrilho.',
+  },
+];
+---
+
+<section class="secao secao--alt pordentro">
+  <div class="container">
+    <div class="secao__cabecalho">
+      <span class="eyebrow">Por dentro</span>
+      <h2 class="h1">Seis suítes, um só nível de cuidado.</h2>
+    </div>
+    <div class="grid-2 pordentro__grid">
+      {
+        ambientes.map((a) => (
+          <figure class="card pordentro__item">
+            <div class="media pordentro__media">
+              <Picture
+                src={a.img}
+                alt={a.alt}
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                widths={[400, 700, 900]}
+                sizes="(min-width: 760px) 50vw, 100vw"
+                loading="lazy"
+              />
+            </div>
+            <figcaption class="h3 pordentro__titulo">{a.titulo}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .pordentro__grid {
+    margin-top: var(--title-gap);
+  }
+
+  .pordentro__item {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .pordentro__media img {
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .pordentro__titulo {
+    padding: var(--space-16) var(--card-pad) var(--card-pad);
+  }
+</style>

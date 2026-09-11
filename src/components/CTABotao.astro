@@ -1,0 +1,28 @@
+---
+// Componente único de reserva — usado no Header e em Reservar.
+// Nunca duplicar este markup em outro lugar (CLAUDE.md "Ação principal").
+import { BOOKING_CHANNEL } from '../config/booking';
+
+interface Props {
+  variante?: 'primario' | 'secundario' | 'terciario';
+  rotulo?: string;
+  full?: boolean;
+  class?: string;
+}
+
+const {
+  variante = 'primario',
+  rotulo = BOOKING_CHANNEL.rotuloPadrao,
+  full = false,
+  class: className = '',
+} = Astro.props;
+---
+
+<a
+  href={BOOKING_CHANNEL.href}
+  class={`botao botao--${variante} ${full ? 'botao--full' : ''} ${className}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  {rotulo}
+</a>

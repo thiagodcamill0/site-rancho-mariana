@@ -1,0 +1,63 @@
+---
+// Sitemap §13.2 item 4 — a promessa central, com os números que dão
+// segurança (CLAUDE.md: 14 hóspedes, 6 suítes, 7 camas, 6 banheiros).
+import { Picture } from 'astro:assets';
+import fachadaJardim from '../../fotos/02-fachada-jardim-banco.jpg';
+---
+
+<section class="secao acasa">
+  <div class="container acasa__grid">
+    <div class="acasa__texto">
+      <span class="eyebrow">A casa</span>
+      <h2 class="h1">Uma casa inteira, não um quarto dividido.</h2>
+      <p>
+        Dentro de um haras em atividade, invisível da estrada e atrás da
+        casa do caseiro: privacidade absoluta desde a chegada.
+      </p>
+      <p>
+        14 hóspedes, 6 suítes, 7 camas e 6 banheiros — espaço de sobra para
+        a família ampliada ou o grupo de amigos inteiro, sem dividir com
+        estranhos.
+      </p>
+      <p class="corpo-secundario">A 4,5 km do centro de Brotas/SP.</p>
+    </div>
+    <div class="media acasa__media">
+      <Picture
+        src={fachadaJardim}
+        alt="Fachada da casa em terracota vista de longe, sob a sombra de uma árvore, com um banco de jardim branco em primeiro plano."
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        widths={[400, 700, 900]}
+        sizes="(min-width: 760px) 50vw, 100vw"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .acasa__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+    align-items: center;
+  }
+
+  @media (min-width: 760px) {
+    .acasa__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .acasa__texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .acasa__media img {
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    object-fit: cover;
+  }
+</style>

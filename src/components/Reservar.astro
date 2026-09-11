@@ -1,0 +1,44 @@
+---
+// Sitemap §13.2 item 10 — CTA final. Mesmo componente do Header, único
+// e trocável (CLAUDE.md "Ação principal").
+import CTABotao from './CTABotao.astro';
+---
+
+<section class="secao reservar">
+  <div class="container reservar__conteudo">
+    <span class="eyebrow">Reservar</span>
+    <h2 class="h1">Venha ver o vale.</h2>
+    <p>
+      Conte pra Ana Camila quantos vão e quando — ela responde em até uma
+      hora.
+    </p>
+    <CTABotao variante="secundario" full />
+  </div>
+</section>
+
+<style>
+  .reservar {
+    background: var(--terra);
+  }
+
+  .reservar__conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-16);
+    max-width: 48ch;
+  }
+
+  /* --terra-soft não pode ser cor de texto (DESIGN.md §4.3) — sobre o
+     fundo terracota sólido usa-se --on-photo, com opacidade reduzida
+     para diferenciar o rótulo do título. */
+  .reservar .eyebrow {
+    color: var(--on-photo);
+    opacity: 0.85;
+  }
+
+  .reservar h2,
+  .reservar p {
+    color: var(--on-photo);
+  }
+</style>

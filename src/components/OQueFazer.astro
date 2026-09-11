@@ -1,0 +1,131 @@
+---
+// Sitemap §13.2 item 6. Lista de comodidades: só as citadas em CLAUDE.md
+// (piscina climatizada, beach tennis com ducha, campinho, playground,
+// casa de boneca, churrasqueira com forno de pizza, fogueira, pomar
+// liberado, cavalos, pet friendly). Sem ícone genérico — lista de texto.
+import { Picture } from 'astro:assets';
+import piscinaDia from '../../fotos/03-piscina-vista-paisagem.jpg';
+import piscinaPorDoSol from '../../fotos/04-piscina-por-do-sol.jpg';
+import varandaVale from '../../fotos/05-varanda-vista-vale.jpg';
+import varandaLounge from '../../fotos/06-varanda-lounge-verde.jpg';
+import varandaRede from '../../fotos/07-varanda-estar-com-rede.jpg';
+import areaGourmet from '../../fotos/08-area-gourmet-externa.jpg';
+
+const comodidades = [
+  'Piscina climatizada',
+  'Beach tennis com ducha',
+  'Campinho',
+  'Playground',
+  'Casa de boneca',
+  'Churrasqueira com forno de pizza',
+  'Fogueira',
+  'Pomar liberado',
+  'Cavalos do haras',
+  'Pet friendly',
+];
+
+const fotos = [
+  {
+    img: piscinaDia,
+    alt: 'Piscina com deck de pedra, espreguiçadeiras e um parquinho de madeira à vista, com o campo aberto ao fundo.',
+  },
+  {
+    img: piscinaPorDoSol,
+    alt: 'Pôr do sol visto da beira da piscina, com árvores e a casa em silhueta contra o céu alaranjado.',
+  },
+  {
+    img: varandaVale,
+    alt: 'Mesa de ferro trabalhado na varanda, com flores e xícara de café, vista para o vale verde e um cachorro pequeno passando ao fundo.',
+  },
+  {
+    img: varandaLounge,
+    alt: 'Canto de estar na varanda com sofá redondo de fibra sintética e almofadas verdes, parede em terracota.',
+  },
+  {
+    img: varandaRede,
+    alt: 'Sofá de madeira com almofadas estampadas de folhagem na varanda coberta da casa.',
+  },
+  {
+    img: areaGourmet,
+    alt: 'Área gourmet coberta com forno de pizza embutido, mesa longa de madeira e vista para o campo.',
+  },
+];
+---
+
+<section class="secao oquefazer">
+  <div class="container">
+    <div class="secao__cabecalho">
+      <span class="eyebrow">O que fazer</span>
+      <h2 class="h1">Dias inteiros sem sair do terreno.</h2>
+      <p>
+        A casa fica dentro de um haras em atividade, com piscina, área de
+        lazer e pomar liberado para os hóspedes.
+      </p>
+    </div>
+
+    <ul class="oquefazer__lista corpo-secundario">
+      {comodidades.map((c) => <li>{c}</li>)}
+    </ul>
+
+    <div class="grid-2 oquefazer__grid">
+      {
+        fotos.map((f) => (
+          <div class="media oquefazer__media">
+            <Picture
+              src={f.img}
+              alt={f.alt}
+              formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+              widths={[400, 700, 900]}
+              sizes="(min-width: 760px) 50vw, 100vw"
+              loading="lazy"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .oquefazer__lista {
+    margin-top: var(--title-gap);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8) var(--space-24);
+    padding-bottom: var(--space-32);
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (min-width: 480px) {
+    .oquefazer__lista {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .oquefazer__lista li {
+    position: relative;
+    padding-left: var(--space-16);
+  }
+
+  .oquefazer__lista li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: var(--radius-avatar);
+    background: var(--pasto);
+  }
+
+  .oquefazer__grid {
+    margin-top: var(--space-32);
+  }
+
+  .oquefazer__media img {
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    object-fit: cover;
+  }
+</style>

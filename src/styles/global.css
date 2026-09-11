@@ -1,0 +1,274 @@
+@import './tokens.css';
+
+/* ---------- reset mínimo ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--terra);
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+p {
+  margin: 0 0 14px;
+  max-width: var(--text-measure);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* foco visível sempre — CLAUDE.md "nada existe só no hover",
+   DESIGN.md §8: nunca outline:none */
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* prefers-reduced-motion corta translate/scale — regra inviolável,
+   CLAUDE.md "Regras invioláveis". Nesta rodada não há animação de
+   entrada ainda; a regra fica pronta para quando ela chegar. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- tipografia ---------- */
+.display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  font-weight: 400;
+  margin: 0;
+}
+
+.h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--ls-h1);
+  font-weight: 400;
+  margin: 0;
+  color: var(--ink);
+}
+
+.h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  font-weight: 500;
+  margin: 0;
+  color: var(--ink);
+}
+
+.h3 {
+  font-family: var(--font-body);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+  font-weight: 600;
+  margin: 0;
+  color: var(--ink);
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--fs-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin: 0 0 var(--space-8);
+}
+
+.corpo-secundario {
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--ink-2);
+}
+
+.numero-destaque {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-number);
+  line-height: var(--lh-number);
+  letter-spacing: var(--ls-number);
+  font-weight: 300;
+  color: var(--terra);
+}
+
+/* ---------- layout ---------- */
+.container {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.secao {
+  padding-block: var(--section-gap);
+}
+
+.secao--alt {
+  background: var(--paper-alt);
+}
+
+.secao__cabecalho {
+  margin-bottom: var(--title-gap);
+}
+
+.secao__cabecalho + * {
+  margin-top: var(--title-gap);
+}
+
+/* grid mobile-first: 1 coluna até 760px, 2 acima — DESIGN.md §6.
+   Nunca 3 colunas de card com foto lado a lado. */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--card-gap);
+}
+
+@media (min-width: 760px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------- cartões e superfícies ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: var(--card-pad);
+}
+
+.media {
+  border-radius: var(--radius-media);
+  overflow: hidden;
+}
+
+/* ---------- botões — DESIGN.md §8 ---------- */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  min-height: 48px;
+  padding: var(--btn-pad-block) var(--btn-pad-inline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: var(--fs-button);
+  font-weight: 600;
+  letter-spacing: var(--ls-button);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 200ms cubic-bezier(.16,1,.3,1),
+    transform 200ms cubic-bezier(.16,1,.3,1);
+}
+
+.botao--primario {
+  background: var(--terra);
+  color: var(--paper);
+  box-shadow: var(--shadow-1);
+}
+
+.botao--primario:hover {
+  background: var(--terra-deep);
+}
+
+.botao--primario:active {
+  background: var(--terra-deep);
+  transform: scale(.98);
+  box-shadow: none;
+}
+
+.botao--secundario {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+}
+
+.botao--secundario:hover {
+  background: var(--paper-alt);
+}
+
+.botao--secundario:active {
+  background: var(--line);
+  transform: scale(.98);
+}
+
+.botao--terciario {
+  background: transparent;
+  color: var(--ink);
+  padding-inline: 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.botao--terciario:hover {
+  color: var(--terra);
+}
+
+.botao--full {
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .botao--full {
+    width: auto;
+  }
+}
+
+/* ---------- utilidades ---------- */
+.medida {
+  max-width: var(--text-measure);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
