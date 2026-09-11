@@ -57,8 +57,17 @@ import CTABotao from './CTABotao.astro';
            o quadro estático e é o elemento elegível a LCP. O vídeo só
            ganha opacidade depois de ter um quadro de fato decodificado
            (evento loadeddata, não loadedmetadata) — nunca aparece
-           preto/quebrado por cima do pôster. -->
-      <video class="hero__video" muted playsinline preload="none" aria-hidden="true" tabindex="-1">
+           preto/quebrado por cima do pôster.
+
+           preload="auto" (não "none"): diagnosticado nesta rodada que
+           o Chromium para de baixar o vídeo sozinho depois de ~3s de
+           buffer e fica em networkState "idle" indefinidamente, porque
+           nunca chamamos .play() no scroll-scrub — só currentTime.
+           Sem sinalizar preload="auto", ele nunca volta a baixar o
+           resto, e toda busca (seek) pra além do buffer vira uma
+           parada real de rede — é isso que sentia "travado", não o
+           ritmo das escritas de currentTime. -->
+      <video class="hero__video" muted playsinline preload="auto" aria-hidden="true" tabindex="-1">
         <source data-src="/videos/camera_pullback_faster_download_1080p.mp4" type="video/mp4" />
       </video>
     </div>
@@ -285,6 +294,23 @@ import CTABotao from './CTABotao.astro';
     const LERP = 0.12;
     const EPSILON = 0.02; // segundos — abaixo disso, considera resolvido
 
+    // Correção "extremamente travado" (it. 8, relato real do usuário):
+    // medido nesta sessão via Playwright (rAF instrumentado +
+    // performance.now() em scroll contínuo simulado) que o loop de rAF
+    // em si roda liso (~11ms/frame, zero frame acima de 25ms) — o
+    // gargalo não é o JS. O que trava é o vídeo: escrever currentTime
+    // a ~60x/s faz o navegador buscar (seek) mais rápido do que
+    // consegue baixar/decodificar — medido buffered ficando bem atrás
+    // de currentTime (ex.: buffered até 3,2s com currentTime já em
+    // 5,1s) e o readyState caindo de HAVE_ENOUGH_DATA pra
+    // HAVE_METADATA no meio da rolagem. A correção: limitar a escrita
+    // real de currentTime a ~24 buscas/segundo (a matemática do lerp
+    // continua rodando a cada frame de rAF, só a gravação em si é
+    // que espaça) — dá tempo do navegador terminar cada seek antes do
+    // próximo, em vez de empilhar pedidos.
+    const SEEK_INTERVAL_MS = 1000 / 24;
+    let lastSeekAt = 0;
+
     function targetTime(): number | null {
       const rect = section!.getBoundingClientRect();
       const scrollable = rect.height - window.innerHeight;
@@ -293,14 +319,23 @@ import CTABotao from './CTABotao.astro';
       return progress * video!.duration;
     }
 
-    function step() {
+    function step(now: number) {
       const target = scrubbing ? targetTime() : null;
+      let continueLoop = false;
       if (target !== null) {
         displayedTime += (target - displayedTime) * LERP;
-        if (Math.abs(target - displayedTime) < EPSILON) displayedTime = target;
-        video!.currentTime = displayedTime;
+        const settled = Math.abs(target - displayedTime) < EPSILON;
+        if (settled) displayedTime = target;
+        // grava sempre que o "gate" de ~42ms libera, e também na
+        // última escrita antes de parar o loop — pra nunca sobrar um
+        // quadro visivelmente atrasado do valor já calculado.
+        if (settled || now - lastSeekAt >= SEEK_INTERVAL_MS) {
+          video!.currentTime = displayedTime;
+          lastSeekAt = now;
+        }
+        continueLoop = !settled;
       }
-      if (target !== null && Math.abs(target - displayedTime) > EPSILON) {
+      if (continueLoop) {
         requestAnimationFrame(step);
       } else {
         looping = false;
