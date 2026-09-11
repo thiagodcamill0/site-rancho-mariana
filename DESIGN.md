@@ -272,6 +272,12 @@ Hover `--paper-alt`; active `--line` + `scale(.98)`.
 **Sobre foto** — botão vai dentro de bloco `--surface` sólido ou sobre véu
 `rgba(28,24,20,.55)`. Nunca botão fantasma direto sobre fotografia.
 
+**Nota (it. 4):** Desabilitado/Carregando descrevem botão de **envio de
+formulário**. O CTA de reserva é link de navegação (`<a>` para WhatsApp/
+Airbnb) — não há nada a carregar, então esses dois estados não se
+aplicam a ele; hover/focus/active bastam. Só voltam a valer se algum
+formulário real (ex.: consulta de preço, §12 item 3) entrar no site.
+
 ---
 
 ## 9. Interações e movimento
