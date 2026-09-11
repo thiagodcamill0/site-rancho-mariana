@@ -94,6 +94,13 @@ const anoAtual = new Date().getFullYear();
     opacity: 1;
   }
 
+  /* estado ativo consistente com o resto do sistema de botões — mesmo
+     scale(.98) do §8, sem inventar linguagem nova (it. 4, acabamento). */
+  .rodape__lista a:active {
+    opacity: 0.7;
+    transform: scale(.98);
+  }
+
   .rodape__copy {
     margin-top: var(--space-16);
   }

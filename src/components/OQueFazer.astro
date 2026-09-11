@@ -148,6 +148,20 @@ const fotos = [
     object-fit: cover;
   }
 
+  /* mesmo acabamento sutil do grid de "Por dentro" (it. 4) — decorativo,
+     só desktop com mouse de verdade, nada de informação some/aparece. */
+  @media (hover: hover) and (pointer: fine) {
+    .oquefazer__media {
+      transition: transform 200ms cubic-bezier(.16, 1, .3, 1),
+        box-shadow 200ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .oquefazer__media:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-2);
+    }
+  }
+
   /* faixa de encerramento horizontal — DESIGN.md §10: "horizontal para
      faixa", diferente do enquadramento vertical dos cards acima. */
   .oquefazer__faixa {
