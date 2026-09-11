@@ -27,6 +27,12 @@ img {
   height: auto;
 }
 
+/* reset do margin default de <figure> (1em 40px no user-agent) — sem
+   isso o navegador soma um valor fora da escala 4px em todo figure. */
+figure {
+  margin: 0;
+}
+
 a {
   color: var(--terra);
 }
@@ -53,9 +59,13 @@ p:last-child {
   outline-offset: 3px;
 }
 
-/* prefers-reduced-motion corta translate/scale — regra inviolável,
-   CLAUDE.md "Regras invioláveis". Nesta rodada não há animação de
-   entrada ainda; a regra fica pronta para quando ela chegar. */
+/* prefers-reduced-motion corta translate/scale/paralaxe "sem exceção"
+   (DESIGN.md §9, CLAUDE.md "Regras invioláveis") — mantém opacidade e
+   cor. Nesta rodada ainda não há animação de entrada nem paralaxe (só
+   chegam nas iterações 5-6), mas o botão primário/secundário já usa
+   scale(.98) no :active (DESIGN.md §8) — o transform:none abaixo já
+   neutraliza esse caso hoje e cobre translate/scale futuros sem
+   precisar ser retocado quando o movimento chegar. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -64,6 +74,7 @@ p:last-child {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+    transform: none !important;
   }
 }
 

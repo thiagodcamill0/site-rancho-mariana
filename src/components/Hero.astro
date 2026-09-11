@@ -36,12 +36,20 @@ import CTABotao from './CTABotao.astro';
 <style>
   .hero {
     position: relative;
+    width: 100%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
   }
 
   @media (min-width: 768px) {
     .hero {
+      /* width:100% explícito acima evita que o aspect-ratio "encolha" a
+         largura quando max-height entra em vigor em telas largas e
+         baixas (ex.: 1440×900) — sem isso o box de largura automática é
+         recalculado a partir da altura travada, e a foto deixa de
+         sangrar até a borda. object-fit:cover no <img> já cuida do
+         corte, então a proporção exata da seção pode ceder ao limite
+         de altura sem quebrar o enquadramento. */
       aspect-ratio: 16 / 10;
       max-height: 92vh;
     }

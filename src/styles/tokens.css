@@ -26,10 +26,14 @@
   --madeira: #8A6740;
   --danger: #A32017;
 
-  /* texto sobre foto com véu escuro (§7 véu, §10 hero) — reaproveita
-     --paper como "branco quente" da paleta, não introduz cor nova. */
-  --on-photo: var(--paper);
-  --veil: 28, 24, 20; /* rgb base do véu §7 */
+  /* texto sobre foto com véu escuro (§7 véu, §10 hero) — mesmo valor de
+     --paper hoje, mas com valor literal PRÓPRIO (não aliado a --paper):
+     o véu sobre a foto é sempre escuro, em modo claro ou escuro do
+     site, então o texto por cima precisa continuar claro mesmo se
+     --paper for redefinido para o fundo escuro do §4.5. Ver nota sobre
+     dark mode no relatório desta iteração. */
+  --on-photo: #FAF7F2;
+  --veil: 28, 24, 20; /* rgb base do véu §7 — também não muda no dark mode */
   --paper-rgb: 250, 247, 242; /* mesmo valor de --paper, para uso em rgba() */
 
   /* §5 — espaçamento, escala 4px */
@@ -44,8 +48,11 @@
   --space-96: 96px;
   --space-128: 128px;
 
-  /* §5 — gutter e ritmo, responsivo por media query abaixo */
-  --gutter: var(--space-24);
+  /* §5 — gutter e ritmo, responsivo por media query abaixo.
+     Gutter mobile é 20px por valor literal da tabela §5 — não é um
+     degrau da escala 4px (que salta de 16 a 24), mas é o número exato
+     que o documento define para esta linha específica. */
+  --gutter: 20px;
   --section-gap: var(--space-64);
   --title-gap: var(--space-16);
   --card-gap: var(--space-16);

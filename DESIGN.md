@@ -366,8 +366,10 @@ Em ordem de impacto:
    manda para o Airbnb, que cobra comissão. O site pode captar direto no
    WhatsApp (14) 99623-7904. **Muda o CTA de toda a página** e é a decisão mais
    cara deste projeto.
-2. **Fotos em arquivo original** — as 83 estão no Airbnb; o projeto não tem
-   nenhuma. Sem elas não há site.
+2. ~~Fotos em arquivo original~~ **Parcialmente resolvido na it. 1** — 15 das 83
+   foram baixadas em resolução original e estão em uso. Segue faltando: drone
+   do vale, fachada noturna, retrato da Ana Camila (ver §10 "lacunas a
+   produzir").
 3. **Preço aparece?** Diária, mínimo de noites, política de pets, taxa da
    caseira. Define se existe tabela ou só consulta.
 4. **Existe logo?** Hoje não há nenhum ativo de marca.
@@ -377,6 +379,17 @@ Em ordem de impacto:
 7. **Idioma:** só pt-BR? Há avaliação de hóspede de Nova York.
 8. **Detector de fumaça e de monóxido** aparecem como "não informados" no
    Airbnb. Se existirem, é conteúdo de confiança; se não, é questão de operação.
+9. **Modo escuro — paleta completa.** §4.5 só define fundo (`#1C1814`) e
+   terracota clara (`#C9563C`), condicionado a "se houver modo escuro" — nunca
+   confirmado como requisito, e ausente da checklist "Definição de pronto" do
+   `PROMPT.md`. Faltam `--surface`, `--ink`, `--ink-2`, `--line`, `--terra-deep`
+   e o contraste do texto sobre `--terra-soft` no escuro: são ~7 valores de
+   identidade visual, não "fiação" de CSS — inventá-los sem fonte (foto
+   noturna real) contraria a regra de não preencher buraco com default.
+   **Decisão da it. 2: dark mode fica fora do escopo até vir com prioridade e,
+   idealmente, fotos noturnas para amostrar as cores.** O acoplamento que
+   causaria bug (`--on-photo` herdando de `--paper`) já foi corrigido — véu
+   sobre foto permanece estável em qualquer tema futuro.
 
 ---
 
@@ -447,9 +460,10 @@ iteração 1 com conteúdo real — sem placeholder.
 Herói da iteração 1 usa `01-fachada-principal-perspectiva.jpg` (prioridade 2
 da curadoria, sky livre à esquerda para o texto) como escolha interina.
 
-**`15-area-externa-familia-e-pets.jpg` retirada de uso** até confirmação de
-consentimento das pessoas identificáveis na foto — pendente de resposta do
-usuário. Ver lista de Direção.
+**`15-area-externa-familia-e-pets.jpg` liberada para uso** — consentimento das
+pessoas identificáveis na foto confirmado pelo usuário/proprietário em
+2026-09-11. Em uso desde a iteração 2, como faixa horizontal de fechamento em
+"O que fazer" (`src/components/OQueFazer.astro`).
 
 ---
 

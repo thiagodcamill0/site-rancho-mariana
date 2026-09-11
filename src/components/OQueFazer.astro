@@ -10,6 +10,7 @@ import varandaVale from '../../fotos/05-varanda-vista-vale.jpg';
 import varandaLounge from '../../fotos/06-varanda-lounge-verde.jpg';
 import varandaRede from '../../fotos/07-varanda-estar-com-rede.jpg';
 import areaGourmet from '../../fotos/08-area-gourmet-externa.jpg';
+import familiaPets from '../../fotos/15-area-externa-familia-e-pets.jpg';
 
 const comodidades = [
   'Piscina climatizada',
@@ -84,6 +85,21 @@ const fotos = [
         ))
       }
     </div>
+
+    <figure class="media oquefazer__faixa">
+      <Picture
+        src={familiaPets}
+        alt="Uma mulher grávida sentada em um banco de ferro branco no jardim recebe um beijo na testa de um homem, com uma menina pequena apoiada nela e um cachorro pequeno ao lado — vale verde ao fundo."
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        widths={[480, 768, 1200]}
+        sizes="100vw"
+        loading="lazy"
+      />
+      <figcaption class="corpo-secundario oquefazer__faixa-legenda">
+        Pet friendly, para toda a família — de avós a bebês, com o cachorro junto.
+      </figcaption>
+    </figure>
   </div>
 </section>
 
@@ -127,5 +143,21 @@ const fotos = [
     aspect-ratio: 4 / 5;
     width: 100%;
     object-fit: cover;
+  }
+
+  /* faixa de encerramento horizontal — DESIGN.md §10: "horizontal para
+     faixa", diferente do enquadramento vertical dos cards acima. */
+  .oquefazer__faixa {
+    margin: var(--space-32) 0 0;
+  }
+
+  .oquefazer__faixa img {
+    aspect-ratio: 3 / 2;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .oquefazer__faixa-legenda {
+    margin-top: var(--space-8);
   }
 </style>
