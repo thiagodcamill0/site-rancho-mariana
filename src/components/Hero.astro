@@ -8,6 +8,10 @@ import CTABotao from './CTABotao.astro';
 ---
 
 <section class="hero" data-parallax-container aria-labelledby="hero-titulo">
+  <!-- widths topa em 1200 = largura real de fotos/01-...jpg (it. 7,
+       auditoria de peso: um 1600 pedido antes não upscalava — o Astro
+       clampa pro tamanho real — mas tirar daqui evita sugerir uma
+       variante que nunca é gerada). -->
   <Picture
     src={fachada}
     alt="Fachada da casa principal do Rancho Mariana vista do jardim, com telhado colonial em telha cerâmica, redes na varanda e caminho de pedra entre o gramado e vasos de barro."
@@ -15,7 +19,7 @@ import CTABotao from './CTABotao.astro';
     data-parallax
     formats={['avif', 'webp']}
     fallbackFormat="jpg"
-    widths={[480, 768, 1200, 1600]}
+    widths={[480, 768, 1200]}
     sizes="100vw"
     fetchpriority="high"
     loading="eager"

@@ -88,13 +88,16 @@ const fotos = [
 
     <figure class="media oquefazer__faixa">
       <div class="oquefazer__faixa-caixa" data-parallax-container>
+        <!-- widths topa em 720 = largura real de fotos/15-...jpg —
+             768 e 1200 pedidos antes só clampavam pro mesmo arquivo
+             (it. 7, auditoria de peso). -->
         <Picture
           src={familiaPets}
           alt="Uma mulher grávida sentada em um banco de ferro branco no jardim recebe um beijo na testa de um homem, com uma menina pequena apoiada nela e um cachorro pequeno ao lado — vale verde ao fundo."
           data-parallax
           formats={['avif', 'webp']}
           fallbackFormat="jpg"
-          widths={[480, 768, 1200]}
+          widths={[480, 720]}
           sizes="100vw"
           loading="lazy"
         />

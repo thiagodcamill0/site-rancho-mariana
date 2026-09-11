@@ -17,6 +17,17 @@ const { title, description } = Astro.props;
     <title>{title}</title>
     <meta name="description" content={description} />
 
+    <!--
+      Favicon utilitário (it. 7) — não existe logo (CLAUDE.md), então é
+      só a inicial em serifa sobre --terra, gerado em public/favicon.svg.
+      Trocar por um logo de verdade quando existir; até lá isso só
+      fecha o 404 de /favicon.ico que o Checker flagou na it. 2.
+    -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--

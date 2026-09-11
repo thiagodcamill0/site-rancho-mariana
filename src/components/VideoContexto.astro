@@ -37,13 +37,16 @@ import poster from '../assets/poster-video-contexto.jpg';
            ("a casa se afastando, revelando o vale e o haras"). Alt
            descritivo aqui faria o leitor de tela anunciar a mesma
            coisa duas vezes seguidas. -->
+      <!-- widths topa em 1200 = largura real do quadro extraído do
+           vídeo (src/assets/poster-video-contexto.jpg) — 1600 pedido
+           antes só clampava pro mesmo arquivo (it. 7). -->
       <Picture
         src={poster}
         alt=""
         class="video-contexto__poster"
         formats={['avif', 'webp']}
         fallbackFormat="jpg"
-        widths={[768, 1200, 1600]}
+        widths={[768, 1200]}
         sizes="100vw"
         loading="lazy"
       />

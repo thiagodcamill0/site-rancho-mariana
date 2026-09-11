@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!--
+    Favicon utilitário e provisório (CLAUDE.md: "Não existe logo.
+    Tratar o nome como wordmark tipográfico"). Fundo cor terra
+    (token terra, ver tokens.css) e a inicial em serifa, mesma
+    direção visual do wordmark do header (Fraunces), sem tentar ser
+    uma marca desenhada. Trocar assim que um logo de verdade existir.
+  -->
+  <rect width="64" height="64" rx="8" fill="#9C3B28" />
+  <text
+    x="32"
+    y="45"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="38"
+    font-weight="500"
+    fill="#FAF7F2"
+    text-anchor="middle"
+  >R</text>
+</svg>

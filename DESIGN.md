@@ -492,6 +492,19 @@ pessoas identificáveis na foto confirmado pelo usuário/proprietário em
 2026-09-11. Em uso desde a iteração 2, como faixa horizontal de fechamento em
 "O que fazer" (`src/components/OQueFazer.astro`).
 
+**8 fotos substituídas por versão aprimorada por IA em 2026-09-11** —
+`03-piscina-vista-paisagem`, `06-varanda-lounge-verde`,
+`08-area-gourmet-externa`, `09-sala-de-estar`, `10-sala-de-jantar`,
+`11-cozinha-equipada`, `14-banheiro-suite-azul`,
+`15-area-externa-familia-e-pets`. Mesma cena, mesmo enquadramento, mesmas
+pessoas/objetos em cada uma — conferido par a par antes da troca (não é
+conteúdo gerado do zero). O ganho é resolução/nitidez e correção de
+perspectiva (ex.: a torta do banheiro 14 ficou reta). Arquivo final
+recodificado para `.jpg` (qualidade 92, mozjpeg) para manter nome e formato
+originais — nenhum código precisou mudar. Registrado aqui porque §10 exige
+"sem filtro, sem pós-produção pesada"; correção técnica (nitidez/perspectiva)
+não é filtro criativo, mas fica documentado para rastreabilidade.
+
 ---
 
 *Este arquivo é suficiente para construir telas consistentes hoje. Cor e

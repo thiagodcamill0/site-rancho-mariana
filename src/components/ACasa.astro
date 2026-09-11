@@ -22,12 +22,15 @@ import fachadaJardim from '../../fotos/02-fachada-jardim-banco.jpg';
       <p class="corpo-secundario">A 4,5 km do centro de Brotas/SP.</p>
     </div>
     <div class="media acasa__media">
+      <!-- widths topa em 700 = perto da largura real de
+           fotos/02-...jpg (720px) — o 900 pedido antes só clampava
+           sem gerar variante nova (it. 7, auditoria de peso). -->
       <Picture
         src={fachadaJardim}
         alt="Fachada da casa em terracota vista de longe, sob a sombra de uma árvore, com um banco de jardim branco em primeiro plano."
         formats={['avif', 'webp']}
         fallbackFormat="jpg"
-        widths={[400, 700, 900]}
+        widths={[400, 700]}
         sizes="(min-width: 760px) 50vw, 100vw"
         loading="lazy"
       />
