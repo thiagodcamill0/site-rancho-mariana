@@ -297,6 +297,14 @@ Nada quica, nada pisca, nada gira.
 - Vídeo de fundo, se houver: mudo, `playsinline`, com pôster, **nunca no
   mobile**, e com controle de pausa visível.
 
+**Ativo reservado para esta seção:** `fotos/simulacao_afastando_da_casa.mp4`
+— simulação de afastamento da casa, fornecida pelo usuário em 2026-09-11.
+Preenche a lacuna "drone do conjunto com o vale" do §10/`curadoria-fotos.md`.
+**Uso pretendido: efeito de rolagem na home, iteração 5-6** — não entra antes
+disso. Ao integrar: regras acima valem sem exceção (mudo, nunca no mobile,
+pausa visível), mais o teto de deslocamento de paralaxe de 12% e a proibição
+de scroll-jacking das "Regras invioláveis" do `CLAUDE.md`.
+
 ---
 
 ## 10. Imagens
