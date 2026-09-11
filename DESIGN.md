@@ -308,45 +308,27 @@ Nada quica, nada pisca, nada gira.
 - Vídeo de fundo, se houver: mudo, `playsinline`, com pôster, **nunca no
   mobile**, e com controle de pausa visível.
 
-**Ativo (revisado 2026-09-11):** `fotos/camera_pullback_faster_download_1080p.mp4`
-substitui `simulacao_afastando_da_casa.mp4` como fonte — mesmo conteúdo
-(afastamento da casa revelando o vale), 1080p/bitrate menor, pedido do usuário
-para reduzir o peso que o Checker já tinha flagado (~7,7 Mbps) na it. 3.
-**Não é filmagem real — gerado por IA, usado sem indicação por decisão do
-usuário. Ver §11 item 7 antes de tratar este vídeo como preenchendo de fato a
-lacuna do §10** (a lacuna documentada ali pedia drone real; isto substitui a
-ausência visualmente, não factualmente).
+**Revertido em 2026-09-11 — herói de vídeo com scroll-scrub removido, volta a
+ser imagem fixa.** Histórico, para quem chegar depois: it. 3 introduziu um
+vídeo ligado à rolagem numa seção própria; it. 8 fundiu isso com o Herói numa
+"abertura cinematográfica"; corrigimos scroll-jacking, sticky quebrado e
+travamento de buffer nesse meio-tempo — tudo tecnicamente correto ao final.
+Mesmo assim, o usuário pediu para voltar a uma **imagem fixa**, usando
+`fotos/home.png`. Sem scroll-scrub, sem vídeo, sem `position:sticky`, sem a
+seção de 250vh. `camera_pullback_faster_download_1080p.mp4` sai de uso (fica
+no repositório como ativo não utilizado, não apagar — pode voltar a ser
+relevante).
 
-**Decisão de fusão (it. 8, a pedido do usuário): Herói e "Vídeo de contexto"
-deixam de ser duas seções e viram uma só experiência de abertura contínua.**
-O herói (frase-síntese + CTA) abre sobre o vídeo desde o primeiro frame; ao
-rolar, o mesmo vídeo continua a fazer o scrub que revelava o vale (o que
-antes era a seção separada). Sitemap §13.2 atualizado — item 2 agora é
-"Herói cinematográfico", item 3 antigo (Vídeo de contexto) removido como
-seção própria.
+**Herói volta ao padrão do Efeito 2 da §9** (paralaxe em foto full-bleed, teto
+12%, foto mais lenta que o texto) — mesmo tratamento que já existia antes da
+it. 8, agora sobre `home.png` em vez da fachada diurna original.
+`home.png` também é gerado por IA (mesma origem do vídeo revertido acima) —
+decisão já registrada em §11 item 7, continua valendo, não precisa
+reconfirmar.
 
-Regras que continuam valendo sem exceção: mudo, `playsinline`, pôster real,
-controle de pausa sempre visível, teto de paralaxe 12%, proibição de
-scroll-jacking (a rolagem nunca é interceptada — a velocidade/direção fica
-100% com o usuário; a técnica de `position:sticky` já usada na it. 3 não
-intercepta rolagem e continua sendo a base).
-
-**Mobile continua sem vídeo de fundo — regra dura, sem exceção**, mesmo com o
-pedido de "boa experiência em mobile" desta rodada: o usuário deixou margem
-explícita para simplificar no celular se a sincronia comprometer performance,
-e a regra já documentada aqui existe exatamente por isso. No celular: herói
-estático sobre o pôster do vídeo (mesmo enquadramento/veú), sem scroll-scrub,
-mesma qualidade visual de acabamento — não é degradação visível, é ausência
-de vídeo decodificando em CPU/rede fraca.
-
-**Abordagem técnica: continua vanilla JS, sem GSAP/Framer Motion.** §13.1 já
-decidiu "JS vanilla mínimo" contra framework por causa do orçamento de
-performance; introduzir uma lib de animação para uma interpolação de scroll
-contrariaria essa decisão sem necessidade. O ganho de suavidade pedido nesta
-rodada (interpolação/easing, sem saltos em rolagem rápida) é alcançável
-suavizando o `currentTime` do vídeo em direção ao valor alvo a cada frame
-(lerp), em vez de atribuição direta 1:1 já usada na it. 3 — mesma técnica,
-mais uma camada de suavização.
+Sitemap §13.2 item 2 volta a ser só "Herói" (sem "cinematográfico"), sem item
+de vídeo separado — a seção de prova social entra logo em seguida, como já
+era desde a it. 3.
 
 ---
 
@@ -497,14 +479,10 @@ vezes**: uma faixa compacta logo após o herói (cumpre "prova social cedo" da
 §6) e a seção completa de avaliações mais adiante, na posição narrativa.
 
 1. Header — wordmark tipográfico + CTA (componente único, trocável — §12.1)
-2. **Herói cinematográfico** — frase-síntese (§2) + CTA sobre vídeo de
-   afastamento da casa (`camera_pullback_faster_download_1080p.mp4`), ligado
-   à rolagem: abre no primeiro frame, casa fecha em cima e revela o vale/haras
-   conforme o usuário rola. Fusão do antigo item 2 (Herói) + item 3 (Vídeo de
-   contexto) em iteração 8, a pedido do usuário — ver §9 para regras
-   específicas. **Desktop/tablet:** vídeo completo. **Mobile:** pôster estático
-   do mesmo enquadramento, sem scroll-scrub (§10 hard rule: sem vídeo de fundo
-   no celular — sem exceção).
+2. **Herói** — frase-síntese (§2) + CTA sobre `fotos/home.png`, imagem fixa
+   com paralaxe (Efeito 2 da §9, teto 12%). A it. 8 tinha fundido isto com um
+   vídeo de rolagem numa "abertura cinematográfica"; revertido a pedido do
+   usuário no mesmo dia — ver §9 para o histórico completo.
 3. Faixa de prova social — 5,0★/74, Superhost 7 anos, top 5%
 4. A casa — promessa, 14 hóspedes/6 suítes, privacidade
 5. Por dentro — ambientes internos
