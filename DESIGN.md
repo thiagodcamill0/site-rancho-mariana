@@ -231,10 +231,15 @@ trabalhado, rattan, rede). O sistema fica **quase reto**, com raio pequeno.
 | Elemento | Raio |
 |---|---|
 | Botão, chip, tag | `999px` (pílula) |
-| Card, painel | `4px` |
-| Imagem, media block | `4px` |
+| Card, painel | `12px` |
+| Imagem, media block | `12px` |
 | Input, select | `6px` |
 | Avatar | `50%` |
+
+**Revisado 2026-09-11:** card e imagem sobem de `4px` para `12px` (2 degraus
+na escala 4px da §5, mesma lógica de raio) — pedido do usuário. Mantém o
+degrau da escala; não é valor solto. Ver §11 item 4 para o raciocínio
+original ("quase reto") e a atualização.
 
 - Contraste proposital: **superfícies retas, controles em pílula.**
 - Bordas: `1px solid var(--line)` em branco sobre `--paper`. Sem borda colorida
@@ -390,9 +395,12 @@ Vinda da fachada, o elemento mais reconhecível da propriedade, e com 6.6:1 sobr
 branco. *Descartado: verde do gramado como primária — some no meio das fotos, que
 são majoritariamente verdes.*
 
-**4. Raio pequeno (4px) em superfície, pílula em controle.**
+**4. Raio pequeno em superfície, pílula em controle.**
 A arquitetura é reta; a decoração é curva. Cantos muito arredondados dariam ar de
 app, não de casa de campo. *Descartado: raio 16–24px generalizado.*
+**Revisado 2026-09-11:** usuário pediu card/imagem mais arredondados — subiu
+de `4px` para `12px` (ainda um degrau da escala §5, ainda longe de "app"; a
+pílula do controle continua sendo o contraste, não o raio do card sozinho).
 
 **5. Paralaxe sim, scroll-jacking não.**
 Profundidade serve à paisagem. Tirar o controle da rolagem contradiz "sossego" e
