@@ -217,6 +217,11 @@ p:last-child {
 .botao--primario {
   background: var(--terra);
   color: var(--paper);
+  /* borda transparente de propósito (it. 5, Forced Colors Mode): some
+     no modo de cor normal, mas o Windows pinta borda transparente com
+     a cor de sistema em forced-colors — sem isso o botão perde o
+     contorno quando background/box-shadow são anulados pelo modo. */
+  border: 1px solid transparent;
   box-shadow: var(--shadow-1);
 }
 
@@ -317,7 +322,9 @@ p:last-child {
   border-radius: var(--radius-pill);
   background: var(--surface);
   color: var(--ink);
-  border: none;
+  /* borda transparente de propósito (it. 5, Forced Colors Mode) — ver
+     mesma nota em .botao--primario acima. */
+  border: 1px solid transparent;
   cursor: pointer;
   box-shadow: var(--shadow-1);
   transition: background-color 200ms cubic-bezier(.16, 1, .3, 1),

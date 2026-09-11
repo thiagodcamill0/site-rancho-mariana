@@ -10,7 +10,11 @@ const stats = [
 ];
 ---
 
-<section class="faixa">
+<!-- Sem heading visível nesta faixa (só números de destaque) — nome
+     acessível da região vem de aria-label direto (it. 5, auditoria de
+     acessibilidade), já que não há texto de título pra referenciar
+     via aria-labelledby. -->
+<section class="faixa" aria-label="Prova social">
   <div class="container faixa__grid" data-reveal>
     {
       stats.map((s) => (

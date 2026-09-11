@@ -22,7 +22,11 @@ import Footer from '../components/Footer.astro';
   description="Casa inteira para 14 hóspedes dentro de um haras em Brotas/SP. 6 suítes, piscina climatizada, beach tennis e pomar liberado. 5,0 em 74 avaliações, Superhost há 7 anos."
 >
   <Header />
-  <main>
+  <!-- tabindex="-1": <main> não é focável por padrão, então o link de
+       pular conteúdo mudava a URL (#conteudo-principal) mas o foco
+       real ficava em <body> — quem usa leitor de tela não "chegava"
+       lá de fato, só quem via a rolagem da tela. Isolado (it. 5). -->
+  <main id="conteudo-principal" tabindex="-1">
     <Hero />
     <VideoContexto />
     <ProvaSocialFaixa />

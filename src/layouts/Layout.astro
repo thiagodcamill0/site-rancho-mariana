@@ -48,7 +48,48 @@ const { title, description } = Astro.props;
     </noscript>
   </head>
   <body>
+    <a href="#conteudo-principal" class="pular-conteudo">Pular para o conteúdo</a>
     <slot />
     <script src="../scripts/motion.js"></script>
   </body>
 </html>
+
+<style>
+  /* Link de pular conteúdo (it. 5, auditoria de acessibilidade) — fora
+     de tela até receber foco de teclado, então aparece com o mesmo
+     tratamento de foco do resto do sistema (§8: 3px solid var(--ink),
+     outline-offset 3px), sobre fundo --paper sólido pra ficar legível
+     por cima do header. Escondido por clip/tamanho, não por transform:
+     a regra global de prefers-reduced-motion zera todo transform, o
+     que deixaria isso permanentemente visível pra quem pede menos
+     movimento — aqui não é uma questão de movimento, é visibilidade. */
+  .pular-conteudo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    z-index: 100;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: var(--radius-card);
+    font-family: var(--font-body);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .pular-conteudo:focus {
+    top: var(--space-8);
+    left: var(--space-8);
+    width: auto;
+    height: auto;
+    padding: var(--space-12) var(--space-16);
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+</style>

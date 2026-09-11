@@ -7,7 +7,7 @@ import fachada from '../../fotos/01-fachada-principal-perspectiva.jpg';
 import CTABotao from './CTABotao.astro';
 ---
 
-<section class="hero" data-parallax-container>
+<section class="hero" data-parallax-container aria-labelledby="hero-titulo">
   <Picture
     src={fachada}
     alt="Fachada da casa principal do Rancho Mariana vista do jardim, com telhado colonial em telha cerâmica, redes na varanda e caminho de pedra entre o gramado e vasos de barro."
@@ -23,7 +23,7 @@ import CTABotao from './CTABotao.astro';
   <div class="hero__veu" aria-hidden="true"></div>
   <div class="hero__conteudo container" data-reveal>
     <span class="eyebrow hero__eyebrow">Rancho Mariana · Brotas, SP</span>
-    <h1 class="display hero__frase">
+    <h1 id="hero-titulo" class="display hero__frase">
       Uma casa inteira, um vale inteiro, e o resto do mundo longe.
     </h1>
     <p class="hero__promessa">

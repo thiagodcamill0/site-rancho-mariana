@@ -28,12 +28,18 @@ import { Picture } from 'astro:assets';
 import poster from '../assets/poster-video-contexto.jpg';
 ---
 
-<section class="secao video-contexto" id="video-contexto">
+<section class="secao video-contexto" id="video-contexto" aria-labelledby="video-contexto-titulo">
   <div class="video-contexto__stage">
     <div class="video-contexto__media">
+      <!-- alt="" de propósito (it. 5, auditoria de acessibilidade): o
+           pôster é só o estado visual do vídeo, que já é aria-hidden;
+           o parágrafo .sr-only logo abaixo descreve o conteúdo real
+           ("a casa se afastando, revelando o vale e o haras"). Alt
+           descritivo aqui faria o leitor de tela anunciar a mesma
+           coisa duas vezes seguidas. -->
       <Picture
         src={poster}
-        alt="Quadro do vídeo mostrando a fachada da casa — ponto de partida da simulação de afastamento que revela o vale e o haras ao redor conforme a página rola."
+        alt=""
         class="video-contexto__poster"
         formats={['avif', 'webp']}
         fallbackFormat="jpg"
@@ -60,7 +66,7 @@ import poster from '../assets/poster-video-contexto.jpg';
     <div class="video-contexto__veu" aria-hidden="true"></div>
     <div class="video-contexto__conteudo container" data-reveal>
       <span class="eyebrow video-contexto__eyebrow">Vídeo de contexto</span>
-      <h2 class="h1 video-contexto__titulo">A casa dentro do vale.</h2>
+      <h2 id="video-contexto-titulo" class="h1 video-contexto__titulo">A casa dentro do vale.</h2>
       <p class="sr-only">
         Vídeo mostra a casa se afastando aos poucos, revelando o vale e o
         haras ao redor.
