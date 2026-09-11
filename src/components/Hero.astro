@@ -1,40 +1,98 @@
 ---
-// Sitemap §13.2 item 2. Foto: DESIGN.md §13.4 — escolha interina
-// 01-fachada-principal-perspectiva.jpg (sky livre à esquerda).
-// Frase-síntese: DESIGN.md §2, exceção documentada às 7 palavras.
+// Sitemap §13.2 item 2 (DESIGN.md, revisado it. 8): "Herói
+// cinematográfico" — fusão do antigo Hero (item 2, foto estática) com
+// o antigo "Vídeo de contexto" (item 3, seção separada da it. 3), a
+// pedido do usuário. Frase-síntese: DESIGN.md §2, exceção documentada
+// às 7 palavras.
+//
+// Vídeo: fotos/camera_pullback_faster_download_1080p.mp4 — ver §9
+// "Ativo". Substitui simulacao_afastando_da_casa.mp4: mesmo conteúdo
+// (casa fecha em cima, depois se afasta revelando o vale/haras), mas
+// mais eficiente por bit — medido nesta sessão via headless Chromium
+// (sem ffmpeg disponível): 1920×1080/10s a ~6,6 Mbps, contra
+// 1200×900/6s a ~7,7 Mbps antes. O arquivo em si é maior em bytes
+// (mais resolução e duração), mas entrega ~2,7× mais conteúdo por bit.
+//
+// Regras da fusão (DESIGN.md §9 "Decisão de fusão", sem exceção):
+// - Abre no primeiro frame: pôster com fetchpriority="high" (elegível
+//   a LCP) e headline/CTA visíveis imediatamente, sem esperar rolagem.
+// - Ao rolar, o mesmo vídeo faz o scrub que antes vivia numa seção
+//   separada — position:sticky (mesma técnica da it. 3), nunca
+//   scroll-jacking: a velocidade/direção da rolagem é 100% do usuário.
+// - Texto fica fixo (pinned) a rolagem inteira, sobre o véu — por
+//   estar sempre dentro do stage sticky, nunca perde legibilidade,
+//   não só "no topo".
+// - Sem paralaxe CSS aqui (a versão estática tinha): o próprio vídeo
+//   já entrega "profundidade de paisagem" de um jeito muito mais
+//   direto que o deslocamento de 12% simulava — usar os dois juntos
+//   brigaria um com o outro em vez de somar.
+// - Suavização nova (it. 8): currentTime não iguala a posição de
+//   rolagem 1:1 (como na it. 3) — interpola (lerp) em direção ao alvo
+//   a cada frame, pra não saltar em rolagem rápida/arremessada.
+// - Mobile: pôster estático, mesmo enquadramento/véu do desktop, sem
+//   vídeo, sem scroll-scrub, sem o botão de play — ausência total, não
+//   degradação (§10 hard rule: sem vídeo de fundo no celular).
+// - prefers-reduced-motion: sem scroll-scrub — pôster + botão de play
+//   manual, pausado por padrão, toca só sob ação explícita.
 import { Picture } from 'astro:assets';
-import fachada from '../../fotos/01-fachada-principal-perspectiva.jpg';
+import poster from '../assets/poster-hero.jpg';
 import CTABotao from './CTABotao.astro';
 ---
 
-<section class="hero" data-parallax-container aria-labelledby="hero-titulo">
-  <!-- widths topa em 1200 = largura real de fotos/01-...jpg (it. 7,
-       auditoria de peso: um 1600 pedido antes não upscalava — o Astro
-       clampa pro tamanho real — mas tirar daqui evita sugerir uma
-       variante que nunca é gerada). -->
-  <Picture
-    src={fachada}
-    alt="Fachada da casa principal do Rancho Mariana vista do jardim, com telhado colonial em telha cerâmica, redes na varanda e caminho de pedra entre o gramado e vasos de barro."
-    class="hero__imagem"
-    data-parallax
-    formats={['avif', 'webp']}
-    fallbackFormat="jpg"
-    widths={[480, 768, 1200]}
-    sizes="100vw"
-    fetchpriority="high"
-    loading="eager"
-  />
-  <div class="hero__veu" aria-hidden="true"></div>
-  <div class="hero__conteudo container" data-reveal>
-    <span class="eyebrow hero__eyebrow">Rancho Mariana · Brotas, SP</span>
-    <h1 id="hero-titulo" class="display hero__frase">
-      Uma casa inteira, um vale inteiro, e o resto do mundo longe.
-    </h1>
-    <p class="hero__promessa">
-      A casa inteira, cuidada em cada detalhe, com privacidade absoluta e
-      vista para o vale — e uma anfitriã que responde em uma hora.
-    </p>
-    <CTABotao />
+<section id="hero" class="hero" aria-labelledby="hero-titulo">
+  <div class="hero__stage">
+    <div class="hero__media">
+      <Picture
+        src={poster}
+        alt="Fachada da casa principal do Rancho Mariana ao entardecer, luz dourada sobre o telhado de telha cerâmica, jardim e varanda com redes."
+        class="hero__poster"
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        widths={[480, 768, 1200, 1920]}
+        sizes="100vw"
+        fetchpriority="high"
+        loading="eager"
+      />
+      <!-- Sem atributo poster no <video>: a <Picture> acima já mostra
+           o quadro estático e é o elemento elegível a LCP. O vídeo só
+           ganha opacidade depois de ter um quadro de fato decodificado
+           (evento loadeddata, não loadedmetadata) — nunca aparece
+           preto/quebrado por cima do pôster. -->
+      <video class="hero__video" muted playsinline preload="none" aria-hidden="true" tabindex="-1">
+        <source data-src="/videos/camera_pullback_faster_download_1080p.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="hero__veu" aria-hidden="true"></div>
+    <div class="hero__conteudo container" data-reveal>
+      <span class="eyebrow hero__eyebrow">Rancho Mariana · Brotas, SP</span>
+      <h1 id="hero-titulo" class="display hero__frase">
+        Uma casa inteira, um vale inteiro, e o resto do mundo longe.
+      </h1>
+      <p class="hero__promessa">
+        A casa inteira, cuidada em cada detalhe, com privacidade absoluta e
+        vista para o vale — e uma anfitriã que responde em uma hora.
+      </p>
+      <p class="sr-only">
+        Vídeo mostra a casa se afastando aos poucos, revelando o vale e o
+        haras ao redor.
+      </p>
+      <div class="hero__acoes">
+        <CTABotao />
+        <button
+          type="button"
+          class="botao-icone hero__controle"
+          data-video-toggle
+          aria-label="Reproduzir vídeo"
+        >
+          <svg data-icon-play viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+          <svg data-icon-pause viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6 5h4v14H6zm8 0h4v14h-4z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -48,32 +106,64 @@ import CTABotao from './CTABotao.astro';
 
   @media (min-width: 768px) {
     .hero {
-      /* width:100% explícito acima evita que o aspect-ratio "encolha" a
-         largura quando max-height entra em vigor em telas largas e
-         baixas (ex.: 1440×900) — sem isso o box de largura automática é
-         recalculado a partir da altura travada, e a foto deixa de
-         sangrar até a borda. object-fit:cover no <img> já cuida do
-         corte, então a proporção exata da seção pode ceder ao limite
-         de altura sem quebrar o enquadramento. */
-      aspect-ratio: 16 / 10;
-      max-height: 92vh;
+      aspect-ratio: unset;
+      /* altura extra = distância de rolagem que alimenta o scrub do
+         vídeo (mesma lógica do antigo Vídeo de contexto, it. 3). */
+      height: 250vh;
     }
   }
 
-  .hero__imagem {
-    position: absolute;
-    left: 0;
-    /* altura maior que a caixa (130%) + recuo negativo (-15%): dá
-       margem de sobra pro paralaxe (efeito 2, JS) deslocar a foto até
-       12% da altura sem abrir vão nas bordas — object-fit:cover já
-       recorta o excesso, então isso não muda o enquadramento. */
-    top: -15%;
+  /* sem scroll-scrub: vira uma tela só, sem distância extra pra rolar
+     por baixo — mesmo tratamento que o antigo Vídeo de contexto usava. */
+  @media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+    .hero {
+      height: 100vh;
+    }
+  }
+
+  .hero__stage {
+    position: relative;
     width: 100%;
-    height: 130%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .hero__stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+  }
+
+  @media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+    .hero__stage {
+      position: static;
+    }
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__poster,
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    /* horizonte da fachada mantido visível; sky livre à esquerda para o
-       texto — DESIGN.md §13.4 */
-    object-position: center 38%;
+    object-position: center 40%;
+  }
+
+  .hero__video {
+    opacity: 0;
+    transition: opacity 600ms cubic-bezier(.16, 1, .3, 1);
+  }
+
+  .hero__video.is-active {
+    opacity: 1;
   }
 
   /* véu vertical monocromático — único degradê permitido, DESIGN.md §7 */
@@ -124,4 +214,146 @@ import CTABotao from './CTABotao.astro';
     max-width: 42ch;
     margin: 0;
   }
+
+  .hero__acoes {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  /* botão de play/pausa só existe onde o vídeo existe — ausente no
+     celular junto com o resto do aparato de vídeo. */
+  .hero__controle {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hero__controle {
+      display: inline-flex;
+    }
+  }
 </style>
+
+<script>
+  // Herói cinematográfico — vídeo ligado à rolagem. Fusão dos antigos
+  // efeitos 2 (herói estático) e 3 (vídeo de contexto) da it. 3, a
+  // pedido do usuário na it. 8. Ver comentário de topo do arquivo.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isDesktop = () => window.matchMedia('(min-width: 768px)').matches;
+
+  function updateToggleUI(button: HTMLElement, isPlaying: boolean) {
+    button.setAttribute('aria-label', isPlaying ? 'Pausar vídeo' : 'Reproduzir vídeo');
+    button.classList.toggle('is-playing', isPlaying);
+  }
+
+  function initHero() {
+    const section = document.getElementById('hero');
+    if (!section) return;
+    if (!isDesktop()) return; // mobile: só o pôster estático, nada de JS de vídeo
+
+    const video = section.querySelector<HTMLVideoElement>('.hero__video');
+    const source = video?.querySelector<HTMLSourceElement>('source');
+    const toggle = section.querySelector<HTMLButtonElement>('[data-video-toggle]');
+    if (!video || !source || !toggle) return;
+
+    let loaded = false;
+    let scrubbing = !reduceMotion;
+    let displayedTime = 0;
+    let looping = false;
+
+    function loadVideo() {
+      if (loaded) return;
+      loaded = true;
+      source!.src = source!.dataset.src || '';
+      video!.load();
+      // loadeddata (não loadedmetadata): só troca pro vídeo quando já
+      // existe um quadro decodificado de verdade — nunca mostra preto.
+      video!.addEventListener('loadeddata', () => video!.classList.add('is-active'), { once: true });
+    }
+
+    // Suavização (it. 8, pedido do usuário): em vez de igualar
+    // currentTime 1:1 à posição de rolagem (it. 3), interpola o tempo
+    // exibido em direção ao alvo a cada frame — sem isso, rolagem
+    // rápida/arremessada fazia o vídeo saltar em vez de deslizar.
+    const LERP = 0.12;
+    const EPSILON = 0.02; // segundos — abaixo disso, considera resolvido
+
+    function targetTime(): number | null {
+      const rect = section!.getBoundingClientRect();
+      const scrollable = rect.height - window.innerHeight;
+      if (!video!.duration || Number.isNaN(video!.duration) || scrollable <= 0) return null;
+      const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+      return progress * video!.duration;
+    }
+
+    function step() {
+      const target = scrubbing ? targetTime() : null;
+      if (target !== null) {
+        displayedTime += (target - displayedTime) * LERP;
+        if (Math.abs(target - displayedTime) < EPSILON) displayedTime = target;
+        video!.currentTime = displayedTime;
+      }
+      if (target !== null && Math.abs(target - displayedTime) > EPSILON) {
+        requestAnimationFrame(step);
+      } else {
+        looping = false;
+      }
+    }
+
+    function kick() {
+      if (!looping) {
+        looping = true;
+        requestAnimationFrame(step);
+      }
+    }
+
+    video.addEventListener('play', () => updateToggleUI(toggle, true));
+    video.addEventListener('pause', () => {
+      updateToggleUI(toggle, false);
+      if (!reduceMotion) {
+        scrubbing = true; // volta a acompanhar a rolagem
+        kick(); // resincroniza já, sem esperar o próximo scroll
+      }
+    });
+    video.addEventListener('ended', () => {
+      if (!reduceMotion) {
+        scrubbing = true;
+        kick();
+      }
+    });
+
+    if (reduceMotion) {
+      // sem scroll-scrub: só toca sob ação explícita, pausado por padrão
+      toggle.addEventListener('click', () => {
+        loadVideo();
+        video.paused ? video.play() : video.pause();
+      });
+      return;
+    }
+
+    // Conteúdo de primeira dobra: carrega já, sem adiar até aproximar
+    // via scroll (o antigo Vídeo de contexto adiava porque vinha
+    // depois de outra seção; aqui já é o que abre a página). O
+    // <Picture> com fetchpriority="high" continua sendo o elemento
+    // elegível a LCP — o vídeo entra por cima só depois, sem competir.
+    loadVideo();
+
+    window.addEventListener('scroll', kick, { passive: true });
+    kick(); // estado inicial (topo da página, alvo = 0)
+
+    toggle.addEventListener('click', () => {
+      if (video.paused) {
+        scrubbing = false;
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHero);
+  } else {
+    initHero();
+  }
+</script>

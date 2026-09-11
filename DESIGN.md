@@ -307,7 +307,10 @@ Nada quica, nada pisca, nada gira.
 substitui `simulacao_afastando_da_casa.mp4` como fonte — mesmo conteúdo
 (afastamento da casa revelando o vale), 1080p/bitrate menor, pedido do usuário
 para reduzir o peso que o Checker já tinha flagado (~7,7 Mbps) na it. 3.
-Preenche a lacuna "drone do conjunto com o vale" do §10/`curadoria-fotos.md`.
+**Não é filmagem real — gerado por IA, usado sem indicação por decisão do
+usuário. Ver §11 item 7 antes de tratar este vídeo como preenchendo de fato a
+lacuna do §10** (a lacuna documentada ali pedia drone real; isto substitui a
+ausência visualmente, não factualmente).
 
 **Decisão de fusão (it. 8, a pedido do usuário): Herói e "Vídeo de contexto"
 deixam de ser duas seções e viram uma só experiência de abertura contínua.**
@@ -398,6 +401,23 @@ quebra em celular intermediário, que é a maior parte do tráfego.
 
 **6. Cores são aproximadas.** Amostradas de captura de tela comprimida.
 Reamostrar dos originais antes de considerar definitivo.
+
+**7. Vídeo/pôster do herói são gerados por IA, usados sem indicação — decisão
+consciente do usuário, contra a recomendação do Orquestrador.** Confirmado
+pelo usuário em 2026-09-11: `camera_pullback_faster_download_1080p.mp4` e o
+pôster extraído dele não são filmagem/foto real da propriedade. Isso
+contradiz diretamente a premissa central do projeto (§1: a distância entre
+"o que a foto mostra" e "o lugar real" é o problema que o site resolve — três
+avaliações dizem que o lugar é *mais bonito* que as fotos reais, o oposto de
+inflar expectativa com conteúdo sintético) e a regra "não invente fato" do
+`CLAUDE.md`. O Orquestrador expôs o risco explicitamente (expectativa
+desalinhada na chegada, já que é o primeiro conteúdo que todo visitante vê) e
+ofereceu duas alternativas — reverter para fotos reais, ou usar com rótulo de
+conteúdo ilustrativo. **O usuário optou por manter sem aviso.** Decisão
+registrada para rastreabilidade; não é ausência de revisão, é escolha
+informada do dono do negócio sobre o próprio risco. *Se a percepção de
+hóspedes reais divergir do que o herói promete, este é o primeiro lugar a
+revisar.*
 
 ---
 

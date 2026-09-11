@@ -14,9 +14,12 @@
 //    produto real é a paisagem e a distância, e o movimento comunica
 //    essa camada, não decora por decorar.
 //
-// O efeito 3 (vídeo de contexto ligado à rolagem) tem lógica própria
-// em src/components/VideoContexto.astro — específico demais para
-// morar aqui, e mais fácil de revisar isolado.
+// O efeito 3 (vídeo do herói ligado à rolagem, com suavização/lerp) tem
+// lógica própria em src/components/Hero.astro (fundido lá desde a it.
+// 8, antes vivia em VideoContexto.astro como seção separada) —
+// específico demais para morar aqui, e mais fácil de revisar isolado.
+// Por isso o herói não usa mais [data-parallax]: o próprio vídeo já
+// entrega a profundidade que a paralaxe simulava na versão estática.
 //
 // prefers-reduced-motion corta o efeito 2 inteiro (nenhum transform é
 // aplicado) e corta o deslocamento do efeito 1 via CSS global
