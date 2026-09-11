@@ -267,6 +267,89 @@ p:last-child {
   }
 }
 
+/* ---------- movimento — DESIGN.md §9 ---------- */
+
+/* Efeito 1: revelação ao rolar. translateY(24px)->0 + opacidade, uma
+   vez, 600ms, cubic-bezier(.16,1,.3,1) — valores exatos do §9. Sob
+   prefers-reduced-motion, a regra global acima já força
+   transform:none!important e transition-duration quase zero em tudo:
+   a opacidade ainda muda (permitido, "mantém opacidade"), só que sem
+   o deslocamento e quase instantânea — nenhuma regra extra necessária
+   aqui. Sem JS, .no-js garante que o conteúdo não fique preso em
+   opacity:0 — a classe começa no <html> (Layout.astro) e só é trocada
+   por .js de forma síncrona no topo de motion.js; não depende de
+   <noscript>. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms cubic-bezier(.16, 1, .3, 1),
+    transform 600ms cubic-bezier(.16, 1, .3, 1);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.no-js [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Efeito 2: paralaxe em faixa de foto full-bleed. O deslocamento em si
+   é calculado no JS (teto de 12% da altura do elemento — §9); aqui só
+   a dica de performance para a camada que vai receber transform a
+   cada frame de scroll. */
+[data-parallax] {
+  will-change: transform;
+}
+
+/* botão de ícone circular (play/pausa do vídeo de contexto) — mesma
+   pílula/foco do sistema de botões §8, sem rótulo de texto sempre
+   visível porque o ícone já é padrão reconhecível de mídia; o rótulo
+   textual vive no aria-label, que muda com o estado. */
+.botao-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+  transition: background-color 200ms cubic-bezier(.16, 1, .3, 1),
+    transform 200ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.botao-icone:hover {
+  background: var(--paper-alt);
+}
+
+.botao-icone:active {
+  background: var(--line);
+  transform: scale(.98);
+}
+
+.botao-icone svg {
+  width: 18px;
+  height: 18px;
+}
+
+.botao-icone [data-icon-pause] {
+  display: none;
+}
+
+.botao-icone.is-playing [data-icon-play] {
+  display: none;
+}
+
+.botao-icone.is-playing [data-icon-pause] {
+  display: block;
+}
+
 /* ---------- utilidades ---------- */
 .medida {
   max-width: var(--text-measure);

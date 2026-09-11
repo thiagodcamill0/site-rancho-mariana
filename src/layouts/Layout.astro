@@ -10,7 +10,7 @@ const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="no-js">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,12 +19,36 @@ const { title, description } = Astro.props;
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Fonte carregada sem bloquear o primeiro paint. Diagnóstico da it. 3
+      (Lighthouse mobile, Slow 4G simulado): o <link rel="stylesheet">
+      direto pra fonts.googleapis.com era render-blocking — ~900ms de
+      FCP perdido, that atrasava o "element render delay" do LCP (a
+      foto do herói, que não depende de fonte nenhuma pra pintar).
+      display=swap já evitava texto invisível, mas não evitava o
+      bloqueio do CSS em si. Padrão-preload é o jeito padrão e seguro de
+      resolver isso sem mudar o resultado visual.
+    -->
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;600&display=swap"
-      rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;600&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;600&display=swap"
+      />
+    </noscript>
   </head>
   <body>
     <slot />
+    <script src="../scripts/motion.js"></script>
   </body>
 </html>

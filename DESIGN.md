@@ -399,6 +399,13 @@ Em ordem de impacto:
    idealmente, fotos noturnas para amostrar as cores.** O acoplamento que
    causaria bug (`--on-photo` herdando de `--paper`) já foi corrigido — véu
    sobre foto permanece estável em qualquer tema futuro.
+10. **Medição de performance local parece ruidosa.** Na it. 3, um fix real e
+    confirmado de render-blocking (fonte) melhorou o FCP (8,1s→4,0s), mas o
+    LCP total piorou (11,7s→13,8s) no mesmo teste — soma da própria
+    decomposição do Lighthouse não bate com o número final (~1s vs. 11-14s).
+    Sinal de ruído do servidor de preview local + throttling simulado, não
+    regressão real. **A iteração de performance (7) precisa medir em ambiente
+    publicado/deployado, não só local**, ou vai perseguir número instável.
 
 ---
 

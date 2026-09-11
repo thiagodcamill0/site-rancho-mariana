@@ -54,7 +54,7 @@ const fotos = [
 ---
 
 <section class="secao oquefazer">
-  <div class="container">
+  <div class="container" data-reveal>
     <div class="secao__cabecalho">
       <span class="eyebrow">O que fazer</span>
       <h2 class="h1">Dias inteiros sem sair do terreno.</h2>
@@ -87,15 +87,18 @@ const fotos = [
     </div>
 
     <figure class="media oquefazer__faixa">
-      <Picture
-        src={familiaPets}
-        alt="Uma mulher grávida sentada em um banco de ferro branco no jardim recebe um beijo na testa de um homem, com uma menina pequena apoiada nela e um cachorro pequeno ao lado — vale verde ao fundo."
-        formats={['avif', 'webp']}
-        fallbackFormat="jpg"
-        widths={[480, 768, 1200]}
-        sizes="100vw"
-        loading="lazy"
-      />
+      <div class="oquefazer__faixa-caixa" data-parallax-container>
+        <Picture
+          src={familiaPets}
+          alt="Uma mulher grávida sentada em um banco de ferro branco no jardim recebe um beijo na testa de um homem, com uma menina pequena apoiada nela e um cachorro pequeno ao lado — vale verde ao fundo."
+          data-parallax
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+          widths={[480, 768, 1200]}
+          sizes="100vw"
+          loading="lazy"
+        />
+      </div>
       <figcaption class="corpo-secundario oquefazer__faixa-legenda">
         Pet friendly, para toda a família — de avós a bebês, com o cachorro junto.
       </figcaption>
@@ -151,9 +154,22 @@ const fotos = [
     margin: var(--space-32) 0 0;
   }
 
-  .oquefazer__faixa img {
+  /* caixa que define o quadro visível (3/2, recortado); a imagem por
+     dentro fica maior (130%/-15%) só pra dar folga ao paralaxe (efeito
+     2, JS) sem abrir vão nas bordas quando desloca até 12% — mesmo
+     recurso do herói. */
+  .oquefazer__faixa-caixa {
+    position: relative;
     aspect-ratio: 3 / 2;
+    overflow: hidden;
+  }
+
+  .oquefazer__faixa-caixa img {
+    position: absolute;
+    left: 0;
+    top: -15%;
     width: 100%;
+    height: 130%;
     object-fit: cover;
   }
 

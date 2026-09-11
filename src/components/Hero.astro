@@ -7,11 +7,12 @@ import fachada from '../../fotos/01-fachada-principal-perspectiva.jpg';
 import CTABotao from './CTABotao.astro';
 ---
 
-<section class="hero">
+<section class="hero" data-parallax-container>
   <Picture
     src={fachada}
     alt="Fachada da casa principal do Rancho Mariana vista do jardim, com telhado colonial em telha cerâmica, redes na varanda e caminho de pedra entre o gramado e vasos de barro."
     class="hero__imagem"
+    data-parallax
     formats={['avif', 'webp']}
     fallbackFormat="jpg"
     widths={[480, 768, 1200, 1600]}
@@ -20,7 +21,7 @@ import CTABotao from './CTABotao.astro';
     loading="eager"
   />
   <div class="hero__veu" aria-hidden="true"></div>
-  <div class="hero__conteudo container">
+  <div class="hero__conteudo container" data-reveal>
     <span class="eyebrow hero__eyebrow">Rancho Mariana · Brotas, SP</span>
     <h1 class="display hero__frase">
       Uma casa inteira, um vale inteiro, e o resto do mundo longe.
@@ -57,9 +58,14 @@ import CTABotao from './CTABotao.astro';
 
   .hero__imagem {
     position: absolute;
-    inset: 0;
+    left: 0;
+    /* altura maior que a caixa (130%) + recuo negativo (-15%): dá
+       margem de sobra pro paralaxe (efeito 2, JS) deslocar a foto até
+       12% da altura sem abrir vão nas bordas — object-fit:cover já
+       recorta o excesso, então isso não muda o enquadramento. */
+    top: -15%;
     width: 100%;
-    height: 100%;
+    height: 130%;
     object-fit: cover;
     /* horizonte da fachada mantido visível; sky livre à esquerda para o
        texto — DESIGN.md §13.4 */

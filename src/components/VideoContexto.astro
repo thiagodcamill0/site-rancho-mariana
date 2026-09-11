@@ -1,0 +1,297 @@
+---
+// Sitemap §13.2 item 3 (DESIGN.md, adiantado da it. 5-6 para a it. 3 a
+// pedido do usuário — ver §9 "Ativo"). Preenche a lacuna "drone do
+// vale" do §10: fecha em cima da casa e revela o vale/haras ao redor
+// conforme o usuário rola — é o beat "chegada: vista e casa" da §6,
+// tornado literal.
+//
+// Efeito 3 do pedido de movimento desta iteração. Regras aplicadas:
+// - Desktop/tablet only — ausente no mobile (§10 hard rule: sem vídeo
+//   de fundo no celular). Implementado como display:none <768px NO
+//   CSS *e* toda a lógica de JS é guardada por matchMedia — abaixo de
+//   768px nenhum byte de vídeo/pôster é buscado, mesmo que a <section>
+//   continue no HTML (interpretação registrada no relatório da it. 3).
+// - Scroll-scrubbed, não autoplay: currentTime do vídeo segue a
+//   posição de rolagem dentro da seção. Não é scroll-jacking — a
+//   seção usa position:sticky (CSS puro) para manter o vídeo visível
+//   enquanto um contêiner mais alto rola por baixo; a velocidade/
+//   direção da rolagem continua 100% do usuário, nada é animado por
+//   cima disso nem preso.
+// - mudo, playsinline, pôster real (extraído do primeiro quadro do
+//   próprio vídeo via headless Chromium nesta sessão — não é a foto
+//   01, ver relatório), controle de pausa/play sempre visível (§9).
+// - prefers-reduced-motion: sem scroll-scrub. Pôster estático + botão
+//   de ícone (play/pausa, aria-label "Reproduzir vídeo"/"Pausar
+//   vídeo") — toca só sob ação explícita do usuário, pausado por
+//   padrão.
+import { Picture } from 'astro:assets';
+import poster from '../assets/poster-video-contexto.jpg';
+---
+
+<section class="secao video-contexto" id="video-contexto">
+  <div class="video-contexto__stage">
+    <div class="video-contexto__media">
+      <Picture
+        src={poster}
+        alt="Quadro do vídeo mostrando a fachada da casa — ponto de partida da simulação de afastamento que revela o vale e o haras ao redor conforme a página rola."
+        class="video-contexto__poster"
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        widths={[768, 1200, 1600]}
+        sizes="100vw"
+        loading="lazy"
+      />
+      <video
+        class="video-contexto__video"
+        muted
+        playsinline
+        preload="none"
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        <!-- Sem atributo poster aqui de propósito: o <Picture> logo
+             acima já mostra o pôster visualmente, e o atributo poster
+             nativo do <video> dispara uma requisição de rede própria
+             mesmo com display:none/lazy-load — vazava byte no mobile. -->
+
+        <source data-src="/videos/simulacao_afastando_da_casa.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="video-contexto__veu" aria-hidden="true"></div>
+    <div class="video-contexto__conteudo container" data-reveal>
+      <span class="eyebrow video-contexto__eyebrow">Vídeo de contexto</span>
+      <h2 class="h1 video-contexto__titulo">A casa dentro do vale.</h2>
+      <p class="sr-only">
+        Vídeo mostra a casa se afastando aos poucos, revelando o vale e o
+        haras ao redor.
+      </p>
+      <button
+        type="button"
+        class="botao-icone video-contexto__controle"
+        data-video-toggle
+        aria-label="Reproduzir vídeo"
+      >
+        <svg data-icon-play viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+        <svg data-icon-pause viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M6 5h4v14H6zm8 0h4v14h-4z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .video-contexto {
+    display: none;
+    position: relative;
+    padding-block: 0;
+    /* altura extra = distância de rolagem que alimenta o scrub do
+       efeito 3 (JS abaixo). Não é um valor de espaçamento de conteúdo
+       do §5 — é distância de interação de um efeito de rolagem, escopo
+       próprio deste componente. */
+    height: 250vh;
+  }
+
+  @media (min-width: 768px) {
+    .video-contexto {
+      display: block;
+    }
+  }
+
+  /* sem scroll-scrub: vira uma seção normal, de uma tela só, sem
+     distância extra pra rolar por baixo. */
+  @media (prefers-reduced-motion: reduce) {
+    .video-contexto {
+      height: 100vh;
+    }
+  }
+
+  .video-contexto__stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-contexto__stage {
+      position: static;
+    }
+  }
+
+  .video-contexto__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .video-contexto__poster,
+  .video-contexto__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-contexto__video {
+    opacity: 0;
+    transition: opacity 600ms cubic-bezier(.16, 1, .3, 1);
+  }
+
+  .video-contexto__video.is-active {
+    opacity: 1;
+  }
+
+  /* véu vertical monocromático — mesmo recurso do herói, DESIGN.md §7 */
+  .video-contexto__veu {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(var(--veil), 0.68) 0%,
+      rgba(var(--veil), 0.28) 45%,
+      rgba(var(--veil), 0) 75%
+    );
+  }
+
+  .video-contexto__conteudo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-bottom: var(--space-48);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-16);
+  }
+
+  .video-contexto__eyebrow {
+    color: var(--on-photo);
+    opacity: 0.85;
+  }
+
+  .video-contexto__titulo {
+    color: var(--on-photo);
+    max-width: 16ch;
+  }
+</style>
+
+<script>
+  // Efeito 3, isolado neste componente — ver comentário de topo do
+  // arquivo para as regras e justificativas.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isDesktop = () => window.matchMedia('(min-width: 768px)').matches;
+
+  function updateToggleUI(button: HTMLElement, isPlaying: boolean) {
+    button.setAttribute('aria-label', isPlaying ? 'Pausar vídeo' : 'Reproduzir vídeo');
+    button.classList.toggle('is-playing', isPlaying);
+  }
+
+  function initVideoContexto() {
+    const section = document.getElementById('video-contexto');
+    if (!section) return;
+    if (!isDesktop()) return; // ausente no mobile: nada é observado nem carregado
+
+    const video = section.querySelector<HTMLVideoElement>('.video-contexto__video');
+    const source = video?.querySelector<HTMLSourceElement>('source');
+    const toggle = section.querySelector<HTMLButtonElement>('[data-video-toggle]');
+    if (!video || !source || !toggle) return;
+
+    let loaded = false;
+    let scrubbing = !reduceMotion;
+
+    function loadVideo() {
+      if (loaded) return;
+      loaded = true;
+      source!.src = source!.dataset.src || '';
+      video!.load();
+      video!.addEventListener(
+        'loadedmetadata',
+        () => {
+          video!.classList.add('is-active');
+        },
+        { once: true }
+      );
+    }
+
+    video.addEventListener('play', () => updateToggleUI(toggle, true));
+    video.addEventListener('pause', () => {
+      updateToggleUI(toggle, false);
+      if (!reduceMotion) scrubbing = true; // volta a acompanhar a rolagem
+    });
+    video.addEventListener('ended', () => {
+      if (!reduceMotion) scrubbing = true;
+    });
+
+    if (reduceMotion) {
+      // sem scroll-scrub: só toca sob ação explícita, pausado por padrão
+      toggle.addEventListener('click', () => {
+        loadVideo();
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      });
+      return;
+    }
+
+    // Pré-carrega quando o usuário se aproxima da seção, não no load da
+    // página — mas SEM IntersectionObserver: o Hero tem max-height:92vh
+    // (Hero.astro), então em telas largas e baixas (ex.: 1440×900) o
+    // topo desta seção já fica dentro do primeiro viewport com rolagem
+    // zero (828px de herói < 900px de viewport). Qualquer rootMargin
+    // não-negativo dispara o IO nesse instante, porque a seção já está
+    // "intersectando" de verdade — não é bug do valor da margem, é
+    // geometria. Testado com 600px e depois 100px: os dois carregavam o
+    // vídeo sem nenhuma rolagem em 1440×900. A troca é checar a posição
+    // real no mesmo loop de scroll do scrub: só carrega quando o topo
+    // da seção já cruzou a metade da tela, ou seja, quando a rolagem já
+    // aconteceu de verdade.
+    let ticking = false;
+    function onScrollFrame() {
+      ticking = false;
+      const rect = section!.getBoundingClientRect();
+
+      if (!loaded && rect.top < window.innerHeight * 0.5) {
+        loadVideo();
+      }
+
+      if (!scrubbing || !video || Number.isNaN(video.duration) || video.duration === 0) return;
+      const scrollable = rect.height - window.innerHeight;
+      if (scrollable <= 0) return;
+      const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
+      video.currentTime = progress * video.duration;
+    }
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          requestAnimationFrame(onScrollFrame);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+
+    toggle.addEventListener('click', () => {
+      loadVideo();
+      if (video.paused) {
+        scrubbing = false;
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initVideoContexto);
+  } else {
+    initVideoContexto();
+  }
+</script>
